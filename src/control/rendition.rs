@@ -28,6 +28,12 @@ pub fn previous_page(n: usize) -> ControlSequence {
 pub fn next_page(n: usize) -> ControlSequence {
     ControlSequence::new(&[&n.to_string()], "U")
 }
+pub fn modify_size(height: usize, width: usize) -> ControlSequence {
+    ControlSequence::new(&[&height.to_string(), &width.to_string()], " B")
+}
+pub fn select_size(n: usize) -> ControlSequence {
+    ControlSequence::new(&[&n.to_string()], " C")
+}
 
 #[derive(Copy, Clone)]
 pub enum Expansion {
@@ -51,13 +57,13 @@ pub fn expand_or_condense(expansion: Expansion) -> ControlSequence {
 }
 
 #[derive(Copy, Clone)]
-pub enum Token {
+pub enum Combination {
     Two,
     Start,
     End,
 }
 
-impl Display for Token {
+impl Display for Combination {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", match self {
             Self::Two => "0",
@@ -67,8 +73,8 @@ impl Display for Token {
     }
 }
 
-pub fn character_combination(token: Token) -> ControlSequence {
-    ControlSequence::new(&[&token.to_string()], " ^")
+pub fn character_combination(combination: Combination) -> ControlSequence {
+    ControlSequence::new(&[&combination.to_string()], " ^")
 }
 
 pub enum Font {
@@ -90,7 +96,7 @@ impl Display for Font {
             Font::Primary => "0",
             Font::Alternative1 => "1",
             Font::Alternative2 => "2",
-            Font::Alternative3 => "3", 
+            Font::Alternative3 => "3",
             Font::Alternative4 => "4",
             Font::Alternative5 => "5",
             Font::Alternative6 => "6",
@@ -188,4 +194,8 @@ impl Display for SelectGraphic {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.get())
     }
+}
+
+pub fn format_str(str: &str, format: &SelectGraphic) -> String {
+    format!("{}{}{}", format, str, select().default())
 }

@@ -16,11 +16,15 @@ pub mod control;
 
 #[cfg(test)]
 mod tests {
-    use crate::control::rendition::select;
+    use crate::control::rendition::{format_str, select};
 
     #[test]
     fn test() {
-        println!("Hello {}{}{} !", select().fg_red().bold().underline(), "World", select().default())
+        let formatted = format_str(
+            "World", 
+            select().fg_black().bg_yellow().bold().underline()
+        );
+        println!("Hello {} !", formatted);
     }
 
 }
