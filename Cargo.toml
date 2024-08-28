@@ -1,5 +1,5 @@
 [package]
-name = "ecma-48"
+name = "coded-chars"
 version = "0.1.0"
 edition = "2021"
 

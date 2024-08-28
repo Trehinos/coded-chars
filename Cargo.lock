@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "ecma-48"
+name = "coded-chars"
 version = "0.1.0"
