@@ -282,15 +282,28 @@ pub struct GraphicSelection {
 }
 impl GraphicSelection {
     pub fn new() -> Self { Self { modes: vec![] } }
+
+    /// Default rendition (implementation-defined), cancels the effect of any preceding occurrence of SGR in
+    /// the data stream regardless of the setting of the GRAPHIC RENDITION COMBINATION MODE (GRCM).
     pub fn default(&mut self) -> &mut Self { self.add("0") }
+    
+    /// Bold or increased intensity
     pub fn bold(&mut self) -> &mut Self { self.add("1") }
+    
+    /// Faint, decreased intensity or second color
     pub fn faint(&mut self) -> &mut Self { self.add("2") }
     pub fn italic(&mut self) -> &mut Self { self.add("3") }
     pub fn underline(&mut self) -> &mut Self { self.add("4") }
+    
+    /// Slowly blinking (less than 150/minute)
     pub fn slow_blink(&mut self) -> &mut Self { self.add("5") }
+    
+    /// Rapidly blinking (150/minute or more)
     pub fn fast_blink(&mut self) -> &mut Self { self.add("6") }
     pub fn negative(&mut self) -> &mut Self { self.add("7") }
     pub fn conceal(&mut self) -> &mut Self { self.add("8") }
+    
+    /// Crossed-out (characters still legible but marked as to be deleted)
     pub fn cross(&mut self) -> &mut Self { self.add("9") }
     pub fn primary_font(&mut self) -> &mut Self { self.add("10") }
     pub fn alter1_font(&mut self) -> &mut Self { self.add("11") }
@@ -304,11 +317,23 @@ impl GraphicSelection {
     pub fn alter9_font(&mut self) -> &mut Self { self.add("19") }
     pub fn gothic_font(&mut self) -> &mut Self { self.add("20") }
     pub fn double_underline(&mut self) -> &mut Self { self.add("21") }
+    
+    /// Normal color or normal intensity
     pub fn not_bold_or_faint(&mut self) -> &mut Self { self.add("22") }
+    
+    /// Not italicized, not gothic font
     pub fn not_italic(&mut self) -> &mut Self { self.add("23") }
+    
+    /// Not underline (neither singly or doubly)
     pub fn not_underline(&mut self) -> &mut Self { self.add("24") }
+    
+    /// Steady (not blinking)
     pub fn not_blink(&mut self) -> &mut Self { self.add("25") }
+    
+    /// Positive image
     pub fn not_negative(&mut self) -> &mut Self { self.add("27") }
+    
+    /// Revealed characters
     pub fn not_conceal(&mut self) -> &mut Self { self.add("28") }
     pub fn not_cross(&mut self) -> &mut Self { self.add("29") }
     pub fn fg_black(&mut self) -> &mut Self { self.add("30") }
@@ -356,7 +381,7 @@ impl GraphicSelection {
 /// SGR is used to establish one or more graphic rendition aspects for subsequent text. The established
 /// aspects remain in effect until the next occurrence of SGR in the data stream, depending on the setting of
 /// the GRAPHIC RENDITION COMBINATION MODE (GRCM).
-/// 
+///
 /// ### Example
 /// ```
 /// use coded_chars::control::rendition::select_graphic;
@@ -375,9 +400,9 @@ impl Display for GraphicSelection {
 }
 
 /// Format a string with the specified `SGR` sequence.
-/// 
+///
 /// The string is terminated with the sequence `\x1b[0m` to reset the style.
-/// 
+///
 /// ### Example
 /// ```
 /// use coded_chars::control::rendition::{format_str, select_graphic};
