@@ -6,9 +6,48 @@ pub struct Mode {
 }
 impl Mode {
     pub fn new() -> Self { Self { modes: vec![] } }
+
+    /// # GATM - Guarded area transfer mode
+    ///
+    /// - GUARD (set) : Only the contents of unguarded areas in an eligible area are transmitted or transferred.
+    /// - ALL (reset) : The contents of guarded as well as of unguarded areas in an eligible area are transmitted or transferred.
+    ///
+    /// ### Note
+    /// No control functions are affected.
     pub fn guarded_area_transfer(&mut self) -> &mut Self { self.add("1") }
+    
+    /// # KAM - Keyboard action mode
+    /// 
+    /// - ENABLED (set) : All or part of the manual input facilities are enabled to be used.
+    /// - DISABLED (reset) : All or part of the manual input facilities are disabled.
+    /// 
+    /// ### Note
+    /// No control functions are affected.
     pub fn keyboard_action(&mut self) -> &mut Self { self.add("2") }
+    
+    /// # CRM - Control representation mode
+    /// 
+    /// - CONTROL (set) : All control functions are performed as defined; the way formator functions are processed depends on the
+    /// setting of the FORMAT EFFECTOR ACTION MODE (FEAM). A device may choose to image the
+    /// graphical representations of control functions in addition to performing them.
+    /// - GRAPHIC (reset) : All control functions, except RESET MODE (RM), are treated as graphic characters. A device may
+    /// choose to perform some control functions in addition to storing them and imaging their graphical
+    /// representations.
+    /// 
+    /// ### Note
+    /// All control functions, except RM, are affected.
     pub fn control_representation(&mut self) -> &mut Self { self.add("3") }
+    
+    /// # IRM - Insertion replacement mode
+    /// 
+    /// - REPLACE (set) : The graphic symbol of a graphic character or of a control function, for which a graphical representation
+    /// is required, replaces (or, depending upon the implementation, is combined with) the graphic symbol
+    /// imaged at the active presentation position.
+    /// - INSERT (reset) : The graphic symbol of a graphic character or of a control function, for which a graphical representation
+    /// is required, is inserted at the active presentation position.
+    /// 
+    /// ### Note
+    /// Only control functions for which a graphical representation is required are affected.
     pub fn insertion_replacement(&mut self) -> &mut Self { self.add("4") }
     pub fn status_report_transfer(&mut self) -> &mut Self { self.add("5") }
     pub fn erasure(&mut self) -> &mut Self { self.add("6") }

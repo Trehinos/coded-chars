@@ -229,7 +229,7 @@ impl Display for Combination {
 /// of 2 indicate respectively the beginning and the end of a string of graphic characters which are to be
 /// imaged as one single graphic symbol.
 ///
-/// ### NOTE
+/// ### Note
 /// GCC does not explicitly specify the relative sizes or placements of the component parts of a composite
 /// graphic symbol. In the simplest case, two components may be "half-width" and side-by-side. For
 /// example, in Japanese text a pair of characters may be presented side-by-side, and occupy the space of a
