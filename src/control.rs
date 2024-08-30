@@ -22,7 +22,7 @@ impl Display for ControlSequence {
 pub mod rendition;
 pub mod mode;
 pub mod cursor;
-pub mod area {}
+pub mod area;
 pub mod device {}
 pub mod tabulation {}
 pub mod view {}

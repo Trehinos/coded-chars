@@ -1,6 +1,6 @@
 [package]
 name = "coded-chars"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "An implementation of standards ECMA-35, ECMA-43 and ECMA-48"
 license = "MIT"
