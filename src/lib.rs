@@ -11,10 +11,10 @@
 //!
 //! ### Example : format text in an ANSI terminal
 //! ```
-//! use coded_chars::control::rendition::{format_str, next_page, select};
+//! use coded_chars::control::rendition::{format_str, next_page, select_graphic};
 //!
 //! // Direct format
-//! println!("Hello {}{}{} !", select().fg_red().bold().underline(), "World", select().default());
+//! println!("Hello {}{}{} !", select_graphic().fg_red().bold().underline(), "World", select_graphic().default());
 //!
 //! // Clear screen
 //! next_page(1);
@@ -22,7 +22,7 @@
 //! // Using format_str
 //! let formatted = format_str(
 //!     "World",
-//!     select().fg_red().bold().underline()
+//!     select_graphic().fg_red().bold().underline()
 //!  );
 //! println!("Hello {} !", formatted);
 //! ```
@@ -34,13 +34,13 @@ pub mod control;
 
 #[cfg(test)]
 mod tests {
-    use crate::control::rendition::{format_str, next_page, select};
+    use crate::control::rendition::{format_str, next_page, select_graphic};
 
     #[test]
     fn test() {
 
         // Direct format
-        println!("Hello {}{}{} !", select().fg_red().bold().underline(), "World", select().default());
+        println!("Hello {}{}{} !", select_graphic().fg_red().bold().underline(), "World", select_graphic().default());
 
         // Clear screen
         next_page(1);
@@ -48,7 +48,7 @@ mod tests {
         // Using format_str
         let formatted = format_str(
             "World",
-            select().fg_red().bold().underline()
+            select_graphic().fg_red().bold().underline()
         );
         println!("Hello {} !", formatted);
     }

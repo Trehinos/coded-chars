@@ -1,3 +1,5 @@
+//! This module provides all rendition control sequences of ecma-48.
+
 use std::fmt::{Display, Formatter};
 use crate::control::ControlSequence;
 
@@ -6,7 +8,7 @@ use crate::control::ControlSequence;
 /// If the DEVICE COMPONENT SELECT MODE (DCSM) is set to PRESENTATION, ICH is used to
 /// prepare the insertion of n characters, by putting into the erased state the active presentation position and,
 /// depending on the setting of the CHARACTER EDITING MODE (HEM), the n-1 preceding or following
-/// character positions in the presentation component, where n equals the value of Pn. The previous contents
+/// character positions in the presentation component, where n equals the value of `n`. The previous contents
 /// of the active presentation position and an adjacent string of character positions are shifted away from the
 /// active presentation position. The contents of n character positions at the other end of the shifted part are
 /// removed. The active presentation position is moved to the line home position in the active line. The line
@@ -20,7 +22,7 @@ use crate::control::ControlSequence;
 /// If the DEVICE COMPONENT SELECT MODE (DCSM) is set to DATA, ICH is used to prepare the
 /// insertion of n characters, by putting into the erased state the active data position and, depending on the
 /// setting of the CHARACTER EDITING MODE (HEM), the n-1 preceding or following character
-/// positions in the data component, where n equals the value of Pn. The previous contents of the active data
+/// positions in the data component, where n equals the value of `n`. The previous contents of the active data
 /// position and an adjacent string of character positions are shifted away from the active data position. The
 /// contents of n character positions at the other end of the shifted part are removed. The active data
 /// position is moved to the line home position in the active line. The line home position is established by
@@ -34,7 +36,7 @@ pub fn insert_char(n: usize) -> ControlSequence {
 /// If the DEVICE COMPONENT SELECT MODE (DCSM) is set to PRESENTATION, IL is used to
 /// prepare the insertion of n lines, by putting into the erased state in the presentation component the active
 /// line (the line that contains the active presentation position) and, depending on the setting of the LINE
-/// EDITING MODE (VEM), the n-1 preceding or following lines, where n equals the value of Pn. The
+/// EDITING MODE (VEM), the n-1 preceding or following lines, where n equals the value of `n`. The
 /// previous contents of the active line and of adjacent lines are shifted away from the active line. The
 /// contents of n lines at the other end of the shifted part are removed. The active presentation position is
 /// moved to the line home position in the active line. The line home position is established by the
@@ -51,7 +53,7 @@ pub fn insert_char(n: usize) -> ControlSequence {
 /// If the DEVICE COMPONENT SELECT MODE (DCSM) is set to DATA, IL is used to prepare the
 /// insertion of n lines, by putting into the erased state in the data component the active line (the line that
 /// contains the active data position) and, depending on the setting of the LINE EDITING MODE (VEM),
-/// the n-1 preceding or following lines, where n equals the value of Pn. The previous contents of the active
+/// the n-1 preceding or following lines, where n equals the value of `n`. The previous contents of the active
 /// line and of adjacent lines are shifted away from the active line. The contents of n lines at the other end
 /// of the shifted part are removed. The active data position is moved to the line home position in the active
 /// line. The line home position is established by the parameter value of SET LINE HOME (SLH).
@@ -64,7 +66,7 @@ pub fn insert_line(n: usize) -> ControlSequence {
 /// If the DEVICE COMPONENT SELECT MODE (DCSM) is set to PRESENTATION, DCH causes the
 /// contents of the active presentation position and, depending on the setting of the CHARACTER
 /// EDITING MODE (HEM), the contents of the n-1 preceding or following character positions to be
-/// removed from the presentation component, where n equals the value of Pn. The resulting gap is closed
+/// removed from the presentation component, where n equals the value of `n`. The resulting gap is closed
 /// by shifting the contents of the adjacent character positions towards the active presentation position. At
 /// the other end of the shifted part, n character positions are put into the erased state.
 ///
@@ -76,31 +78,99 @@ pub fn insert_line(n: usize) -> ControlSequence {
 /// If the DEVICE COMPONENT SELECT MODE (DCSM) is set to DATA, DCH causes the contents of
 /// the active data position and, depending on the setting of the CHARACTER EDITING MODE (HEM),
 /// the contents of the n-1 preceding or following character positions to be removed from the data
-/// component, where n equals the value of Pn. The resulting gap is closed by shifting the contents of the
+/// component, where n equals the value of `n`. The resulting gap is closed by shifting the contents of the
 /// adjacent character positions towards the active data position. At the other end of the shifted part, n
 /// character positions are put into the erased state.
 pub fn delete_char(n: usize) -> ControlSequence {
     ControlSequence::new(&[&n.to_string()], "P")
 }
 
+
+/// # DL - Delete line
+///
+/// If the DEVICE COMPONENT SELECT MODE (DCSM) is set to PRESENTATION, DL causes the
+/// contents of the active line (the line that contains the active presentation position) and, depending on the
+/// setting of the LINE EDITING MODE (VEM), the contents of the n-1 preceding or following lines to be
+/// removed from the presentation component, where n equals the value of `n`. The resulting gap is closed
+/// by shifting the contents of a number of adjacent lines towards the active line. At the other end of the
+/// shifted part, n lines are put into the erased state.
+///
+/// The active presentation position is moved to the line home position in the active line. The line home
+/// position is established by the parameter value of SET LINE HOME (SLH). If the TABULATION STOP
+/// MODE (TSM) is set to SINGLE, character tabulation stops are cleared in the lines that are put into the
+/// erased state.
+///
+/// The extent of the shifted part is established by SELECT EDITING EXTENT (SEE).
+///
+/// Any occurrences of the start or end of a selected area, the start or end of a qualified area, or a tabulation
+/// stop in the shifted part, are also shifted.
+///
+/// If the DEVICE COMPONENT SELECT MODE (DCSM) is set to DATA, DL causes the contents of the
+/// active line (the line that contains the active data position) and, depending on the setting of the LINE
+/// EDITING MODE (VEM), the contents of the n-1 preceding or following lines to be removed from the
+/// data component, where n equals the value of `n`. The resulting gap is closed by shifting the contents of a
+/// number of adjacent lines towards the active line. At the other end of the shifted part, n lines are put into
+/// the erased state. The active data position is moved to the line home position in the active line. The line
+/// home position is established by the parameter value of SET LINE HOME (SLH).
 pub fn delete_line(n: usize) -> ControlSequence {
     ControlSequence::new(&[&n.to_string()], "M")
 }
 
+/// # ECH - Erase character
+///
+/// If the DEVICE COMPONENT SELECT MODE (DCSM) is set to PRESENTATION, ECH causes the
+/// active presentation position and the n-1 following character positions in the presentation component to
+/// be put into the erased state, where n equals the value of `n`.
+///
+/// If the DEVICE COMPONENT SELECT MODE (DCSM) is set to DATA, ECH causes the active data
+/// position and the n-1 following character positions in the data component to be put into the erased state,
+/// where n equals the value of `n`.
+///
+/// Whether the character positions of protected areas are put into the erased state, or the character positions
+/// of unprotected areas only, depends on the setting of the ERASURE MODE (ERM).
 pub fn erase_char(n: usize) -> ControlSequence {
     ControlSequence::new(&[&n.to_string()], "X")
 }
 
+/// # PP - Preceding page
+///
+/// PP causes the n-th preceding page in the presentation component to be displayed, where n equals the
+/// value of `n`. The effect of this control function on the active presentation position is not defined by this
+/// Standard.
 pub fn previous_page(n: usize) -> ControlSequence {
     ControlSequence::new(&[&n.to_string()], "V")
 }
 
+/// # NP - Next page
+///
+/// NP causes the n-th following page in the presentation component to be displayed, where n equals the
+/// value of `n`. The effect of this control function on the active presentation position is not defined by this Standard.
 pub fn next_page(n: usize) -> ControlSequence {
     ControlSequence::new(&[&n.to_string()], "U")
 }
+
+/// # GSM - Graphic size modification
+///
+/// GSM is used to modify for subsequent text the height and/or the width of all primary and alternative
+/// fonts identified by FONT SELECTION (FNT) and established by GRAPHIC SIZE SELECTION (GSS).
+///
+/// The established values remain in effect until the next occurrence of GSM or GSS in the data steam.
+///
+/// `height` and `width` are percentage of values established by GSS ([select_size]).
 pub fn modify_size(height: usize, width: usize) -> ControlSequence {
     ControlSequence::new(&[&height.to_string(), &width.to_string()], " B")
 }
+
+/// # GSS - Graphic size selection
+///
+/// GSS is used to establish for subsequent text the height and the width of all primary and alternative fonts
+/// identified by FONT SELECTION (FNT). The established values remain in effect until the next
+/// occurrence of GSS in the data stream.
+///
+/// `n` specifies the height, the width is implicitly defined by the height.
+///
+/// The unit in which the parameter value is expressed is that established by the parameter value of SELECT
+/// SIZE UNIT (SSU).
 pub fn select_size(n: usize) -> ControlSequence {
     ControlSequence::new(&[&n.to_string()], " C")
 }
@@ -122,6 +192,14 @@ impl Display for Expansion {
     }
 }
 
+/// # PEC - Presentation expand or contract
+///
+/// PEC is used to establish the spacing and the extent of the graphic characters for subsequent text. The
+/// spacing is specified in the line as multiples of the spacing established by the most recent occurrence of
+/// SET CHARACTER SPACING (SCS) or of SELECT CHARACTER SPACING (SHS) or of SPACING
+/// INCREMENT (SPI) in the data stream. The extent of the characters is implicitly established by these
+/// control functions. The established spacing and the extent remain in effect until the next occurrence of
+/// PEC, of SCS, of SHS or of SPI in the data stream.
 pub fn expand_or_condense(expansion: Expansion) -> ControlSequence {
     ControlSequence::new(&[&expansion.to_string()], " Z")
 }
@@ -143,6 +221,19 @@ impl Display for Combination {
     }
 }
 
+/// # GCC - Graphic character combination
+///
+/// GCC is used to indicate that two or more graphic characters are to be imaged as one single graphic
+/// symbol. GCC with a parameter value of 0 indicates that the following two graphic characters are to be
+/// imaged as one single graphic symbol; GCC with a parameter value of 1 and GCC with a parameter value
+/// of 2 indicate respectively the beginning and the end of a string of graphic characters which are to be
+/// imaged as one single graphic symbol.
+///
+/// ### NOTE
+/// GCC does not explicitly specify the relative sizes or placements of the component parts of a composite
+/// graphic symbol. In the simplest case, two components may be "half-width" and side-by-side. For
+/// example, in Japanese text a pair of characters may be presented side-by-side, and occupy the space of a
+/// normal-size Kanji character.
 pub fn character_combination(combination: Combination) -> ControlSequence {
     ControlSequence::new(&[&combination.to_string()], " ^")
 }
@@ -177,15 +268,19 @@ impl Display for Font {
     }
 }
 
+/// # FNT - Font selection
+///
+/// FNT is used to identify the character font to be selected as primary or alternative font by subsequent
+/// occurrences of SELECT GRAPHIC RENDITION (SGR) in the data stream.
 pub fn select_font(font: Font) -> ControlSequence {
-    ControlSequence::new(&[&font.to_string()], " D")
+    ControlSequence::new(&[&font.to_string(), "0"], " D")
 }
 
 #[derive(Clone)]
-pub struct SelectGraphic {
+pub struct GraphicSelection {
     modes: Vec<String>,
 }
-impl SelectGraphic {
+impl GraphicSelection {
     pub fn new() -> Self { Self { modes: vec![] } }
     pub fn default(&mut self) -> &mut Self { self.add("0") }
     pub fn bold(&mut self) -> &mut Self { self.add("1") }
@@ -256,16 +351,43 @@ impl SelectGraphic {
     }
 }
 
-pub fn select() -> SelectGraphic {
-    SelectGraphic::new()
+/// # SGR - Select graphic rendition
+///
+/// SGR is used to establish one or more graphic rendition aspects for subsequent text. The established
+/// aspects remain in effect until the next occurrence of SGR in the data stream, depending on the setting of
+/// the GRAPHIC RENDITION COMBINATION MODE (GRCM).
+/// 
+/// ### Example
+/// ```
+/// use coded_chars::control::rendition::select_graphic;
+///
+/// // Direct format
+/// println!("Hello {}{}{} !", select_graphic().fg_red().bold().underline(), "World", select_graphic().default());
+/// ```
+pub fn select_graphic() -> GraphicSelection {
+    GraphicSelection::new()
 }
 
-impl Display for SelectGraphic {
+impl Display for GraphicSelection {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.get())
     }
 }
 
-pub fn format_str(str: &str, format: &SelectGraphic) -> String {
-    format!("{}{}{}", format, str, select().default())
+/// Format a string with the specified `SGR` sequence.
+/// 
+/// The string is terminated with the sequence `\x1b[0m` to reset the style.
+/// 
+/// ### Example
+/// ```
+/// use coded_chars::control::rendition::{format_str, select_graphic};
+///
+/// let formatted = format_str(
+///     "World",
+///     select_graphic().fg_red().bold().underline()
+///  );
+/// println!("Hello {} !", formatted);
+/// ```
+pub fn format_str(str: &str, format: &GraphicSelection) -> String {
+    format!("{}{}{}", format, str, select_graphic().default())
 }
