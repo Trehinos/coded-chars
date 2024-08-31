@@ -25,4 +25,22 @@ pub mod cursor;
 pub mod area;
 pub mod device {}
 pub mod tabulation {}
-pub mod view {}
+pub mod view;
+
+/// This function is a shorthand for :
+/// ```
+/// use coded_chars::control::area::{erase_in_page, AreaPosition};
+/// use coded_chars::control::cursor::set_position;
+/// print!(
+///     "{}{}",
+///     erase_in_page(
+///         AreaPosition::Whole
+///     ),
+///     set_position(1, 1)
+/// )
+/// ```
+/// 
+/// The page is erased and the cursor position is set to the first line and the first column.
+pub fn clear_screen() {
+    print!("{}{}", area::erase_in_page(area::AreaPosition::Whole), cursor::set_position(1, 1))
+}

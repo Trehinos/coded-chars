@@ -34,7 +34,7 @@ pub mod control;
 
 #[cfg(test)]
 mod tests {
-    use crate::control::area::clear_screen;
+    use crate::control::clear_screen;
     use crate::control::rendition::{format_str, select_graphic};
 
     #[test]

@@ -242,9 +242,3 @@ impl Display for Qualification {
 pub fn define_qualification(qualification: Qualification) -> ControlSequence {
     ControlSequence::new(&[&qualification.to_string()], "o")
 }
-
-/// A shorthand for  
-/// `print("{}", erase_in_page(AreaPosition::Whole))`.
-pub fn clear_screen() {
-    print!("{}", erase_in_page(AreaPosition::Whole))
-}

@@ -1,4 +1,3 @@
-use std::fmt::Display;
 use crate::control::ControlSequence;
 
 pub struct Mode {
