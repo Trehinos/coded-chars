@@ -1,9 +1,10 @@
 [package]
 name = "coded-chars"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
-description = "An implementation of standards ECMA-35, ECMA-43 and ECMA-48"
+description = "An implementation of ECMA-35, ECMA-43 and ECMA-48 standards."
 license = "MIT"
+repository = "https://github.com/Trehinos/coded-chars"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

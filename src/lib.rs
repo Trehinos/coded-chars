@@ -34,7 +34,8 @@ pub mod control;
 
 #[cfg(test)]
 mod tests {
-    use crate::control::rendition::{format_str, next_page, select_graphic};
+    use crate::control::area::clear_screen;
+    use crate::control::rendition::{format_str, select_graphic};
 
     #[test]
     fn test() {
@@ -43,7 +44,7 @@ mod tests {
         println!("Hello {}{}{} !", select_graphic().fg_red().bold().underline(), "World", select_graphic().default());
 
         // Clear screen
-        next_page(1);
+        clear_screen();
 
         // Using format_str
         let formatted = format_str(
