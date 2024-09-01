@@ -66,14 +66,14 @@ pub mod view;
 ///
 /// This function is a shorthand for :
 /// ```
+/// use coded_chars::control::area::{erase_in_page, AreaPosition};
+/// use coded_chars::control::cursor::set_position;
 /// print!(
 ///     "{}{}",
-///     coded_chars::control::area::erase_in_page(
-///         coded_chars::control::area::AreaPosition::Whole
-///     ),
-///     coded_chars::control::cursor::set_position(1, 1)
-/// )
+///     erase_in_page(AreaPosition::Whole),
+///     set_position(1, 1)
+/// );
 /// ```
 pub fn clear_screen() {
-    print!("{}{}", area::erase_in_page(area::AreaPosition::Whole), cursor::set_position(1, 1))
+    print!("{}{}", area::erase_in_page(area::AreaPosition::Whole), cursor::set_position(1, 1));
 }
