@@ -27,37 +27,37 @@ impl Mode {
     /// ### Note
     /// No control functions are affected.
     pub fn guarded_area_transfer(&mut self) -> &mut Self { self.add("1") }
-    
+
     /// # KAM - Keyboard action mode
-    /// 
+    ///
     /// - ENABLED (set) : All or part of the manual input facilities are enabled to be used.
     /// - DISABLED (reset) : All or part of the manual input facilities are disabled.
-    /// 
+    ///
     /// ### Note
     /// No control functions are affected.
     pub fn keyboard_action(&mut self) -> &mut Self { self.add("2") }
-    
+
     /// # CRM - Control representation mode
-    /// 
+    ///
     /// - CONTROL (set) : All control functions are performed as defined; the way formator functions are processed depends on the
     /// setting of the FORMAT EFFECTOR ACTION MODE (FEAM). A device may choose to image the
     /// graphical representations of control functions in addition to performing them.
     /// - GRAPHIC (reset) : All control functions, except RESET MODE (RM), are treated as graphic characters. A device may
     /// choose to perform some control functions in addition to storing them and imaging their graphical
     /// representations.
-    /// 
+    ///
     /// ### Note
     /// All control functions, except RM, are affected.
     pub fn control_representation(&mut self) -> &mut Self { self.add("3") }
-    
+
     /// # IRM - Insertion replacement mode
-    /// 
+    ///
     /// - REPLACE (set) : The graphic symbol of a graphic character or of a control function, for which a graphical representation
     /// is required, replaces (or, depending upon the implementation, is combined with) the graphic symbol
     /// imaged at the active presentation position.
     /// - INSERT (reset) : The graphic symbol of a graphic character or of a control function, for which a graphical representation
     /// is required, is inserted at the active presentation position.
-    /// 
+    ///
     /// ### Note
     /// Only control functions for which a graphical representation is required are affected.
     pub fn insertion_replacement(&mut self) -> &mut Self { self.add("4") }
@@ -190,16 +190,102 @@ impl Mode {
     /// - [crate::control::rendition::delete_char],
     /// - [crate::control::rendition::insert_char].
     pub fn character_editing(&mut self) -> &mut Self { self.add("10") }
-    pub fn positioning_unit(&mut self) -> &mut Self { self.add("11") }
+
+    /// # SRM - Send/receive mode
+    ///
+    /// - MONITOR (set) : Data which are locally entered are immediately imaged.
+    /// - SIMULTANEOUS (reset) : Local input facilities are logically disconnected from the output mechanism; only data which are sent to
+    /// the device are imaged.
+    ///
+    /// ### Note
+    /// No control functions are affected.
     pub fn send_receive(&mut self) -> &mut Self { self.add("12") }
+
+    /// # FEAM - Format effector action mode
+    ///
+    /// - EXECUTE (set) : Formator functions are performed immediately and may be stored in addition to being performed.
+    /// - STORE (reset) :Formator functions are stored but not performed. In this case, the specified action is intended to be
+    /// performed by another device when the associated data are transmitted or transferred.
+    ///
+    /// ### Note
+    /// Control functions affected are: BPH, BS, CR, DTA, FF, FNT, GCC, GSM, GSS, HPA, HPB, HPR, HT,
+    /// HTJ, HTS, HVP, JFY, NEL, PEC, PFS, PLD, PLU, PPA, PPB, PPR, PTX, QUAD, RI, SACS, SAPV,
+    /// SCO, SCS, SGR, SHS, SLH, SLL, SLS, SPD, SPI, SPQR, SRCS, SRS, SSU, SSW, STAB, SVS, TAC, TALE,
+    /// TATE, TBC, TCC, TSS, VPA, VPB, VPR, VTS.
     pub fn format_effector_action(&mut self) -> &mut Self { self.add("13") }
+
+    /// # FETM - Format effector transfer mode
+    ///
+    /// - INSERT (set) : Formator functions may be inserted in a data stream to be transmitted or in data to be transferred to an
+    /// auxiliary input/output device.
+    /// - EXCLUDE (reset) : No formator functions other than those received while the FORMAT EFFECTOR ACTION MODE
+    /// (FEAM) is set to STORE are included in a transmitted data stream or in data transferred to an auxiliary
+    /// input/output device.
+    ///
+    /// ### Note
+    /// No control functions are affected.
     pub fn format_effector_transfer(&mut self) -> &mut Self { self.add("14") }
+
+    /// # MATM - Multiple area transfer mode
+    ///
+    /// - SINGLE (set) : Only the contents of the selected area which contains the active presentation position are eligible to be
+    /// transmitted or transferred.
+    /// - MULTIPLE (reset) : The contents of all selected areas are eligible to be transmitted or transferred.
+    ///
+    /// ### Note
+    /// No control functions are affected.
     pub fn multiple_area_transfer(&mut self) -> &mut Self { self.add("15") }
+
+    /// # TTM - Transfer termination mode
+    ///
+    /// - CURSOR (set) : Only the contents of the character positions preceding the active presentation position in the presentation
+    /// component are eligible to be transmitted or transferred.
+    /// - ALL (reset) : The contents of character positions preceding, following, and at the active presentation position are
+    /// eligible to be transmitted or transferred.
+    ///
+    /// ### Note
+    /// No control functions are affected.
     pub fn transfert_termination(&mut self) -> &mut Self { self.add("16") }
+
+    /// # SATM - Selected area transfer mode
+    ///
+    /// - SELECT (set) : Only the contents of selected areas are eligible to be transmitted or transferred.
+    /// - ALL (reset) : The contents of all character positions, irrespective of any explicitly defined selected areas, are eligible
+    /// to be transmitted or transferred.
+    ///
+    /// ### Note
+    /// No control functions are affected.
     pub fn selected_area_transfer(&mut self) -> &mut Self { self.add("17") }
+
+    /// # TSM - Tabulation stop mode
+    ///
+    /// - MULTIPLE (set) : Character tabulation stops in the presentation component are set or cleared in the active line (the line
+    /// that contains the active presentation position) and in the corresponding character positions of the
+    /// preceding lines and of the following lines.
+    /// - SINGLE (reset) : Character tabulation stops in the presentation component are set or cleared in the active line only.
+    ///
+    /// ### Note
+    /// Control functions affected are: CTC, DL, HTS, IL, TBC.
+    ///
+    /// - (todo CTC),
+    /// - [crate::control::rendition::delete_line],
+    /// - (todo HTS),
+    /// - [crate::control::rendition::insert_line].
+    /// - (todo TBC).
     pub fn tabulation_stop(&mut self) -> &mut Self { self.add("18") }
+    
+    /// # GRCM - Graphic rendition combination mode
+    /// 
+    /// - REPLACING (set) : Each occurrence of the control function SELECT GRAPHIC RENDITION (SGR) cancels the effect of
+    /// any preceding occurrence. Any graphic rendition aspects that are to remain unchanged after an
+    /// occurrence of SGR have to be re-specified by that SGR.
+    /// - CUMULATIVE (reset) : Each occurrence of the control function SELECT GRAPHIC RENDITION (SGR) causes only those
+    /// graphic rendition aspects to be changed that are specified by that SGR. All other graphic rendition
+    /// aspects remain unchanged.
+    /// 
+    /// ### Note
+    /// Control function affected is SGR : [crate::control::rendition::select_graphic].
     pub fn graphic_rendition_combination(&mut self) -> &mut Self { self.add("21") }
-    pub fn zero_default(&mut self) -> &mut Self { self.add("22") }
 
     /// # SM - Set Mode
     /// SM causes the modes of the receiving device to be set as specified.
