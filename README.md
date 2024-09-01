@@ -3,7 +3,7 @@
 This crate's goal is to implement the ECMA-48 standard for coded characters in rust.
 
 Various constructions are provided to easily add control character and sequences inside text.
-This crate is compatible with ANSI terminals.
+This crate is compatible with "ANSI terminals".
 
 This crate does not use concept of "styles" or any kind of abstraction other than ones defined in the standard.
 

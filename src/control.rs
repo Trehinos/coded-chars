@@ -1,3 +1,5 @@
+//! This module provides the CSI sequences.
+
 use std::fmt::{Display, Formatter};
 use crate::escape;
 
@@ -10,6 +12,10 @@ pub struct ControlSequence {
 impl ControlSequence {
     pub fn new(from: &[&str], end: &str) -> Self {
         ControlSequence { arguments: from.iter().map(|s| s.to_string()).collect::<Vec<_>>(), end: end.to_string() }
+    }
+    
+    pub fn exec(&self) {
+        println!("{}", self);
     }
 }
 
@@ -31,7 +37,7 @@ pub mod view;
 ///
 /// - The ANSI/ECMA printed function is : `ED(2),CUP(1,1)`
 /// - The ANSI/ECMA printed sequence is : `\x1b[2J\x1b[1;1H`
-/// 
+///
 /// This function is a shorthand for :
 /// ```
 /// print!(

@@ -2,7 +2,7 @@
 //!
 //! Various constructions are provided to easily add control character and sequences inside text.
 //!
-//! This crate is compatible with ANSI terminals.
+//! This crate is compatible with "ANSI terminals".
 //!
 //! ### Standard implemented
 //! - [ecma-48](https://ecma-international.org/publications-and-standards/standards/ecma-48/) - Control Functions for Coded Character Sets
