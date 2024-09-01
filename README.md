@@ -15,6 +15,31 @@ This crate does not use a concept of "styles" or any kind of abstraction other t
 
 [On docs.rs](https://docs.rs/coded-chars/latest/coded_chars/)
 
+### An example
+
+```rust
+use coded_chars::control::clear_screen;
+use coded_chars::control::cursor::set_position;
+use coded_chars::control::rendition::{format_str, select_graphic};
+
+// Direct format by printing a ControlSequence :
+println!("Hello {}World{} !", select_graphic().fg_red().bold().underline(), select_graphic().default());
+
+// The function clear_screen() prints a sequence to clear the screen and position the cursor at the start of the screen.
+clear_screen();
+
+// The same string using format_str
+let formatted = format_str(
+    "World",
+    select_graphic().fg_red().bold().underline()
+);
+println!("Hello {} !", formatted);
+
+// Instead of printing a ControlSequence, you can exec() it.
+set_position(5, 1).exec();
+println!("This line is printed on the fifth line.");
+```
+
 ### Current status
 
 This crate is still in active development.
