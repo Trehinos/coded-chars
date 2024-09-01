@@ -1,23 +1,22 @@
-//! This crate implements ECMA standards for coded characters in rust.
+//! This crate implements the ECMA-48 standard for coded characters in rust.
 //!
 //! Various constructions are provided to easily add control character and sequences inside text.
 //!
 //! This crate is compatible with ANSI terminals.
 //!
-//! ### Standards implemented
-//! - [ecma-35](https://ecma-international.org/publications-and-standards/standards/ecma-35/) - Character Code Structure and Extension Techniques
-//! - [ecma-43](https://ecma-international.org/publications-and-standards/standards/ecma-43/) - 8-Bit Coded Character Set Structure and Rules
+//! ### Standard implemented
 //! - [ecma-48](https://ecma-international.org/publications-and-standards/standards/ecma-48/) - Control Functions for Coded Character Sets
 //!
 //! ### Example : format text in an ANSI terminal
 //! ```
-//! use coded_chars::control::rendition::{format_str, next_page, select_graphic};
+//! use coded_chars::control::clear_screen;
+//! use coded_chars::control::rendition::{format_str, select_graphic};
 //!
 //! // Direct format
-//! println!("Hello {}{}{} !", select_graphic().fg_red().bold().underline(), "World", select_graphic().default());
+//! println!("Hello {}World{} !", select_graphic().fg_red().bold().underline(), select_graphic().default());
 //!
 //! // Clear screen
-//! next_page(1);
+//! clear_screen();
 //!
 //! // Using format_str
 //! let formatted = format_str(
@@ -41,7 +40,7 @@ mod tests {
     fn test() {
 
         // Direct format
-        println!("Hello {}{}{} !", select_graphic().fg_red().bold().underline(), "World", select_graphic().default());
+        println!("Hello {}World{} !", select_graphic().fg_red().bold().underline(), select_graphic().default());
 
         // Clear screen
         clear_screen();

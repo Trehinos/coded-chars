@@ -27,20 +27,21 @@ pub mod device {}
 pub mod tabulation {}
 pub mod view;
 
+/// The page is erased and the cursor position is set to the first line and the first column.
+///
+/// - The ANSI/ECMA printed function is : `ED(2),CUP(1,1)`
+/// - The ANSI/ECMA printed sequence is : `\x1b[2J\x1b[1;1H`
+/// 
 /// This function is a shorthand for :
 /// ```
-/// use coded_chars::control::area::{erase_in_page, AreaPosition};
-/// use coded_chars::control::cursor::set_position;
 /// print!(
 ///     "{}{}",
-///     erase_in_page(
-///         AreaPosition::Whole
+///     coded_chars::control::area::erase_in_page(
+///         coded_chars::control::area::AreaPosition::Whole
 ///     ),
-///     set_position(1, 1)
+///     coded_chars::control::cursor::set_position(1, 1)
 /// )
 /// ```
-/// 
-/// The page is erased and the cursor position is set to the first line and the first column.
 pub fn clear_screen() {
     print!("{}{}", area::erase_in_page(area::AreaPosition::Whole), cursor::set_position(1, 1))
 }
