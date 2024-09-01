@@ -1,3 +1,5 @@
+//! This module helps move and set the cursor position.
+
 use std::fmt::{Display, Formatter};
 use crate::control::ControlSequence;
 

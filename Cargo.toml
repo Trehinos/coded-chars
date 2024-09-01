@@ -1,10 +1,12 @@
 [package]
 name = "coded-chars"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 description = "An implementation of the ECMA-48 standard."
 license = "MIT"
 repository = "https://github.com/Trehinos/coded-chars"
+categories = ["command-line-interface"]
+keywords = ["ecma-48", "ansi", "terminal", "csi", "color"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

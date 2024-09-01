@@ -1,3 +1,5 @@
+//! This module helps create the CSI sequences for `SM` and `RM`.
+
 use crate::control::ControlSequence;
 
 /// A struct representing an `SM` or an `RM` CSI function.

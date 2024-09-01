@@ -10,6 +10,7 @@
 //! ### Example : format text in an ANSI terminal
 //! ```
 //! use coded_chars::control::clear_screen;
+//! use coded_chars::control::cursor::set_position;
 //! use coded_chars::control::rendition::{format_str, select_graphic};
 //!
 //! // Direct format
@@ -24,6 +25,9 @@
 //!     select_graphic().fg_red().bold().underline()
 //!  );
 //! println!("Hello {} !", formatted);
+//!
+//! set_position(5, 1).exec();
+//! println!("This line is printed on the fifth line.");
 //! ```
 
 pub mod characters;
