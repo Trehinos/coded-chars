@@ -518,7 +518,7 @@ impl PresentationVariant {
     }
 }
 
-/// # SAPV
+/// # SAPV - Select alternative presentation variants
 ///
 /// SAPV is used to specify one or more variants for the presentation of subsequent text.
 pub fn select_alternative() -> PresentationVariant {
@@ -579,7 +579,7 @@ pub enum CharacterPath {
     /// left-to-right (in the case of horizontal line orientation), or top-to-bottom (in the case of vertical line
     /// orientation).
     LeftToRight,
-    
+
     /// right-to-left (in the case of horizontal line orientation), or bottom-to-top (in the case of vertical line
     /// orientation).
     RightToLeft,
@@ -597,7 +597,7 @@ impl Display for CharacterPath {
 pub enum PathEffect {
     /// Implementation dependant.
     Undefined,
-    
+
     /// The content of the active line in the presentation component (the line that contains the active
     /// presentation position) is updated to correspond to the content of the active line in the data component
     /// (the line that contains the active data position) according to the newly established character path
@@ -605,7 +605,7 @@ pub enum PathEffect {
     /// position in the active line in the data component, the active presentation position in the presentation
     /// component is updated accordingly.
     UpdatePresentation,
-    
+
     /// The content of the active line in the data component (the line that contains the active data position) is
     /// updated to correspond to the content of the active line in the presentation component (the line that
     /// contains the active presentation position) according to the newly established character path
@@ -615,6 +615,12 @@ pub enum PathEffect {
     UpdateData,
 }
 
+/// # SCP - Select character path
+///
+/// SCP is used to select the character path, relative to the line orientation, for the active line (the line that
+/// contains the active presentation position) and subsequent lines in the presentation component. It is also
+/// used to update the content of the active line in the presentation component and the content of the active
+/// line (the line that contains the active data position) in the data component. This takes effect immediately.
 pub fn character_path(character_path: CharacterPath, path_effect: PathEffect) -> ControlSequence {
     ControlSequence::new(&[&character_path.to_string(), &path_effect.to_string()], " k")
 }
@@ -627,6 +633,53 @@ impl Display for PathEffect {
             PathEffect::UpdateData => "2",
         })
     }
+}
+
+pub enum StringDirection {
+    End,
+    StartLeftToRight,
+    StartRightToLeft,
+}
+
+impl Display for StringDirection {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            StringDirection::End => "0",
+            StringDirection::StartLeftToRight => "1",
+            StringDirection::StartRightToLeft => "2",
+        })
+    }
+}
+
+/// # SDS - Start directed string
+/// 
+/// SDS is used to establish in the data component the beginning and the end of a string of characters as
+/// well as the direction of the string. This direction may be different from that currently established. The
+/// indicated string follows the preceding text. The established character progression is not affected.
+///
+/// The beginning of a directed string is indicated by SDS with a parameter value not equal to 0. A directed
+/// string may contain one or more nested strings. These nested strings may be directed strings the
+/// beginnings of which are indicated by SDS with a parameter value not equal to 0, or reversed strings the
+/// beginnings of which are indicated by START REVERSED STRING (SRS) with a parameter value of 1.
+///
+/// Every beginning of such a string invokes the next deeper level of nesting.
+///
+/// This Standard does not define the location of the active data position within any such nested string.
+///
+/// The end of a directed string is indicated by SDS with a parameter value of 0. Every end of such a string
+/// re-establishes the next higher level of nesting (the one in effect prior to the string just ended). The
+/// direction is re-established to that in effect prior to the string just ended. The active data position is
+/// moved to the character position following the characters of the string just ended.
+/// 
+/// ### Note 1
+/// The effect of receiving a CVT, HT, SCP, SPD or VT control function within an SDS string is not defined
+/// by this Standard.
+/// 
+/// ### Note 2
+/// The control functions for area definition (DAQ, EPA, ESA, SPA, SSA) should not be used within an SDS
+/// string.
+pub fn directed(string_direction: StringDirection) -> ControlSequence {
+    ControlSequence::new(&[&string_direction.to_string()], "]")
 }
 
 
@@ -769,4 +822,37 @@ impl Display for GraphicSelection {
 /// ```
 pub fn format_str(str: &str, format: &GraphicSelection) -> String {
     format!("{}{}{}", format, str, select_graphic().default())
+}
+
+pub enum CharacterSpacing {
+    Per25mm10Chars,
+    Per25mm12Chars,
+    Per25mm15Chars,
+    Per25mm16Chars,
+    Per25mm3Chars,
+    Per50mm9Chars,
+    Per25mm4Chars,
+}
+
+impl Display for CharacterSpacing {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            CharacterSpacing::Per25mm10Chars => "0",
+            CharacterSpacing::Per25mm12Chars => "1",
+            CharacterSpacing::Per25mm15Chars => "2",
+            CharacterSpacing::Per25mm16Chars => "3",
+            CharacterSpacing::Per25mm3Chars => "4",
+            CharacterSpacing::Per50mm9Chars => "5",
+            CharacterSpacing::Per25mm4Chars => "6",
+        })
+    }
+}
+
+/// # SHS - Select character spacing
+/// 
+/// SHS is used to establish the character spacing for subsequent text. The established spacing remains in
+/// effect until the next occurrence of SHS or of SET CHARACTER SPACING (SCS) or of SPACING
+/// INCREMENT (SPI) in the data stream. 
+pub fn select_spacing(character_spacing: CharacterSpacing) -> ControlSequence {
+    ControlSequence::new(&[&character_spacing.to_string()], " K")
 }

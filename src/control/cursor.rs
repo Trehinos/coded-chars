@@ -131,7 +131,7 @@ pub fn character_and_line_position(l: usize, c: usize) -> ControlSequence {
 }
 
 /// # PPA - Page position absolute
-/// 
+///
 /// PPA causes the active data position to be moved in the data component to the corresponding character
 /// position on the `n`-th page.
 pub fn page_position(n: usize) -> ControlSequence {
@@ -139,7 +139,7 @@ pub fn page_position(n: usize) -> ControlSequence {
 }
 
 /// # PPB - Page position backward
-/// 
+///
 /// PPB causes the active data position to be moved in the data component to the corresponding character
 /// position on the `n`-th preceding page.
 pub fn page_backward(n: usize) -> ControlSequence {
@@ -147,9 +147,31 @@ pub fn page_backward(n: usize) -> ControlSequence {
 }
 
 /// # PPR - Page position forward
-/// 
+///
 /// PPR causes the active data position to be moved in the data component to the corresponding character
 /// position on the `n`-th following page.
 pub fn page_forward(n: usize) -> ControlSequence {
     ControlSequence::new(&[&n.to_string()], " Q")
+}
+
+pub enum MovementDirection {
+    Same,
+    Opposite,
+}
+
+impl Display for MovementDirection {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            MovementDirection::Same => "0",
+            MovementDirection::Opposite => "1",
+        })
+    }
+}
+
+/// # SIMD - Select implicit movement direction
+/// 
+/// SIMD is used to select the direction of implicit movement of the data position relative to the character
+/// progression. The direction selected remains in effect until the next occurrence of SIMD.
+pub fn select_implicit(movement_direction: MovementDirection) -> ControlSequence {
+    ControlSequence::new(&[&movement_direction.to_string()], "^")
 }

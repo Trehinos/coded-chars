@@ -40,8 +40,13 @@ impl ControlSequence {
         ControlSequence { arguments: from.iter().map(|s| s.to_string()).collect::<Vec<_>>(), end: end.to_string() }
     }
 
+    /// Prints the current sequence in `stdout` directly.
     pub fn exec(&self) {
+        use std::io::stdout;
+        use std::io::Write;
+        
         print!("{}", self);
+        stdout().flush().unwrap()
     }
 }
 

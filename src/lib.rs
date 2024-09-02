@@ -8,7 +8,7 @@
 //! # Standard implemented
 //! - [ecma-48](https://ecma-international.org/publications-and-standards/standards/ecma-48/) - Control Functions for Coded Character Sets
 //!
-//! > Implementation status : **80%**
+//! > Implementation status : **86%**
 //!
 //! ## An example : format a text printed in an ECMA/ANSI terminal
 //! ```
@@ -67,7 +67,7 @@
 //! - DL : [control::rendition::delete_line]
 //! - DLE : [characters::transmission::DLE]
 //! - DMI : [escape::DMI]
-//! - DSR : [control::device::report_status] & [control::device::StatusReport]
+//! - DSR : [control::device::report_status] (see [control::device::StatusReport])
 //! - DTA : [control::area::dimension_text]
 //! - EA : [control::area::erase]
 //! - ECH : [control::rendition::erase_char]
@@ -85,8 +85,8 @@
 //! - ETX : [characters::transmission::ETX]
 //! - FF : [characters::format::FF]
 //! - FNK : [control::device::function_key]
-//! - FNT : [control::rendition::select_font] & [control::rendition::Font]
-//! - GCC : [control::rendition::character_combination] & [control::rendition::Combination]
+//! - FNT : [control::rendition::select_font] (see [control::rendition::Font])
+//! - GCC : [control::rendition::character_combination] (see [control::rendition::Combination])
 //! - GSM : [control::rendition::modify_size]
 //! - GSS : [control::rendition::select_size]
 //! - HPA : [control::cursor::character_absolute]
@@ -97,7 +97,7 @@
 //! - HTS : [escape::HTS]
 //! - HVP : [control::cursor::character_and_line_position]
 //! - ICH : [control::rendition::insert_char]
-//! - IDCS : [control::device::identify_control_string] & [control::device::ControlString]
+//! - IDCS : [control::device::identify_control_string] (see [control::device::ControlString])
 //! - IGS : [control::device::identify_graphic_sub]
 //! - IL : [control::rendition::insert_line]
 //! - INT : [escape::INT]
@@ -105,7 +105,7 @@
 //! - IS2 : [characters::separator::RS]
 //! - IS3 : [characters::separator::GS]
 //! - IS4 : [characters::separator::FS]
-//! - JFY : [control::view::justify] & [control::view::JustifyMode]
+//! - JFY : [control::view::justify] (see [control::view::JustifyMode])
 //! - LF : [characters::format::LF]
 //! - LS0 : [characters::shift::LS0]
 //! - LS1 : [characters::shift::LS1]
@@ -114,7 +114,7 @@
 //! - LS2R : [escape::LS2R]
 //! - LS3 : [escape::LS3]
 //! - LS3R : [escape::LS3R]
-//! - MC : [control::device::media_copy] & [control::device::CopyStatus]
+//! - MC : [control::device::media_copy] (see [control::device::CopyStatus])
 //! - MW : [escape::MW]
 //! - NAK : [characters::transmission::NAK]
 //! - NBH : [escape::NBH]
@@ -122,8 +122,8 @@
 //! - NP : [control::rendition::next_page]
 //! - NUL : [characters::NUL]
 //! - OSC : [escape::OSC]
-//! - PEC : [control::rendition::expand_or_condense] & [control::rendition::Expansion]
-//! - PFS : [control::area::select_page_format] & [control::area::PageFormat]
+//! - PEC : [control::rendition::expand_or_condense] (see [control::rendition::Expansion])
+//! - PFS : [control::area::select_page_format] (see [control::area::PageFormat])
 //! - PLD : [escape::PLD]
 //! - PLU : [escape::PLU]
 //! - PM : [escape::PM]
@@ -134,37 +134,37 @@
 //! - PTX : [control::rendition::parallel_texts]
 //! - PU1 : [escape::PU1]
 //! - PU2 : [escape::PU2]
-//! - QUAD : [control::rendition::quad] & [control::rendition::Layout]
+//! - QUAD : [control::rendition::quad] (see [control::rendition::Layout])
 //! - REP : [control::rendition::repeat]
 //! - RI : [escape::RI]
 //! - RIS : [escape::RIS]
 //! - RM : [control::mode::Mode::reset]
 //! - SACS : [control::rendition::character_separation]
-//! - SAPV : [control::rendition::select_alternative] & [control::rendition::PresentationVariant]
+//! - SAPV : [control::rendition::select_alternative] (see [control::rendition::PresentationVariant])
 //! - SCI : [escape::SCI]
-//! - SCO : [control::rendition::character_orientation]
-//! - SCP : [control::rendition::character_path]
+//! - SCO : [control::rendition::character_orientation] (see [control::rendition::Orientation])
+//! - SCP : [control::rendition::character_path] (see [control::rendition::CharacterPath] & [control::rendition::PathEffect])
 //! - SD : [control::view::ScrollDirection::Down] (see [control::view::scroll])
-//! - SDS : todo
-//! - SEE : todo
-//! - SEF : todo
-//! - SGR : [control::rendition::select_graphic] & [control::rendition::GraphicSelection]
-//! - SHS : todo
+//! - SDS : [control::rendition::directed] (see [control::rendition::StringDirection])
+//! - SEE : [control::view::select_extent] (see [control::view::EditingExtent])
+//! - SEF : [control::device::eject_and_feed]
+//! - SGR : [control::rendition::select_graphic] (see [control::rendition::GraphicSelection])
+//! - SHS : [control::rendition::select_spacing] (see [control::rendition::CharacterSpacing])
 //! - SI : [characters::shift::SI]
-//! - SIMD : todo
-//! - SL : todo
-//! - SLH : todo
-//! - SLL : todo
-//! - SLS : todo
+//! - SIMD : [control::cursor::select_implicit] (see [control::cursor::MovementDirection])
+//! - SL : [control::view::ScrollDirection::Left] (see [control::view::scroll])
+//! - SLH : [control::view::line_home]
+//! - SLL : [control::view::line_limit]
+//! - SLS : [control::view::line_spacing]
 //! - SM : [control::mode::Mode::set]
 //! - SO : [characters::shift::SO]
 //! - SOH : [characters::transmission::SOH]
 //! - SOS : [escape::SOS]
 //! - SPA : [escape::SPA]
 //! - SPD : todo
-//! - SPH : [control::view::set_page_home]
+//! - SPH : [control::view::page_home]
 //! - SPI : todo
-//! - SPL : todo
+//! - SPL : [control::view::page_limit]
 //! - SPQR : todo
 //! - SR : todo
 //! - SRCS : todo

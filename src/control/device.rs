@@ -142,3 +142,11 @@ impl Display for CopyStatus {
 pub fn media_copy(copy_status: CopyStatus) -> ControlSequence {
     ControlSequence::new(&[&copy_status.to_string()], "i")
 }
+
+/// # SEF - Sheet eject and feed
+///
+/// SEF causes a sheet of paper to be ejected from a printing device into a specified output stacker and
+/// another sheet to be loaded into the printing device from a specified paper bin.
+pub fn eject_and_feed(bin: usize, stacker: usize) -> ControlSequence {
+    ControlSequence::new(&[&bin.to_string(), &stacker.to_string()], " Y")
+}
