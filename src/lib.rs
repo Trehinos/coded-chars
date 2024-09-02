@@ -7,8 +7,8 @@
 //!
 //! # Standard implemented
 //! - [ecma-48](https://ecma-international.org/publications-and-standards/standards/ecma-48/) - Control Functions for Coded Character Sets
-//! 
-//! > Implementation status : **63%**
+//!
+//! > Implementation status : **72%**
 //!
 //! ## An example : format a text printed in an ECMA/ANSI terminal
 //! ```
@@ -40,23 +40,23 @@
 //! - BEL : [characters::BEL]
 //! - BPH : [escape::BPH]
 //! - CAN : [characters::CAN]
-//! - CBT : todo
+//! - CBT : [control::tabulation::cursor_backward]
 //! - CCH : [escape::CCH]
-//! - CHT : todo
+//! - CHT : [control::tabulation::cursor_forward]
 //! - CMD : [escape::CMD]
 //! - CNL : [control::cursor::Direction::NextLine] (see [control::cursor::move_cursor])
 //! - CPL : [control::cursor::Direction::PreviousLine] (see [control::cursor::move_cursor])
-//! - CPR : todo
+//! - CPR : [control::cursor::position_report]
 //! - CR : [characters::format::CR]
 //! - CSI : [escape::CSI] (see [control::ControlSequence])
-//! - CTC : todo
+//! - CTC : [control::tabulation::cursor_control]
 //! - CUB : [control::cursor::Direction::Backward] (see [control::cursor::move_cursor])
 //! - CUD : [control::cursor::Direction::Down] (see [control::cursor::move_cursor])
 //! - CUF : [control::cursor::Direction::Forward] (see [control::cursor::move_cursor])
 //! - CUP : [control::cursor::set_position]
 //! - CUU : [control::cursor::Direction::Up] (see [control::cursor::move_cursor])
-//! - CVT : todo
-//! - DA : todo
+//! - CVT : [control::tabulation::line_tabulation]
+//! - DA : [control::device::attributes]
 //! - DAQ : [control::area::define_qualification]
 //! - DCH : [control::rendition::delete_char]
 //! - DCS : [escape::DCS]
@@ -67,7 +67,7 @@
 //! - DL : [control::rendition::delete_line]
 //! - DLE : [characters::transmission::DLE]
 //! - DMI : [escape::DMI]
-//! - DSR : todo
+//! - DSR : [control::device::report_status]
 //! - DTA : [control::area::dimension_text]
 //! - EA : [control::area::erase]
 //! - ECH : [control::rendition::erase_char]
@@ -84,28 +84,28 @@
 //! - ETB : [characters::transmission::ETB]
 //! - ETX : [characters::transmission::ETX]
 //! - FF : [characters::format::FF]
-//! - FNK : todo
+//! - FNK : [control::device::function_key]
 //! - FNT : [control::rendition::select_font]
 //! - GCC : [control::rendition::character_combination]
 //! - GSM : [control::rendition::modify_size]
 //! - GSS : [control::rendition::select_size]
-//! - HPA : todo
-//! - HPB : todo
-//! - HPR : todo
+//! - HPA : [control::cursor::character_absolute]
+//! - HPB : [control::cursor::character_backward]
+//! - HPR : [control::cursor::character_forward]
 //! - HT : [characters::format::HT]
 //! - HTJ : [escape::HTJ]
 //! - HTS : [escape::HTS]
-//! - HVP : todo
+//! - HVP : [control::cursor::character_and_line_position]
 //! - ICH : [control::rendition::insert_char]
-//! - IDCS : todo
-//! - IGS : todo
+//! - IDCS : [control::device::identify_control_string]
+//! - IGS : [control::device::identify_graphic_sub]
 //! - IL : [control::rendition::insert_line]
 //! - INT : [escape::INT]
 //! - IS1 : [characters::separator::US]
 //! - IS2 : [characters::separator::RS]
 //! - IS3 : [characters::separator::GS]
 //! - IS4 : [characters::separator::FS]
-//! - JFY : todo
+//! - JFY : [control::view::justify]
 //! - LF : [characters::format::LF]
 //! - LS0 : [characters::shift::LS0]
 //! - LS1 : [characters::shift::LS1]
@@ -114,7 +114,7 @@
 //! - LS2R : [escape::LS2R]
 //! - LS3 : [escape::LS3]
 //! - LS3R : [escape::LS3R]
-//! - MC : todo
+//! - MC : [control::device::media_copy]
 //! - MW : [escape::MW]
 //! - NAK : [characters::transmission::NAK]
 //! - NBH : [escape::NBH]
@@ -128,12 +128,12 @@
 //! - PLU : [escape::PLU]
 //! - PM : [escape::PM]
 //! - PP : [control::rendition::previous_page]
-//! - PPA : todo
-//! - PPB : todo
-//! - PPR : todo
-//! - PTX : todo
-//! - PU1 : todo
-//! - PU2 : todo
+//! - PPA : [control::cursor::page_position]
+//! - PPB : [control::cursor::page_backward]
+//! - PPR : [control::cursor::page_forward]
+//! - PTX : [control::rendition::parallel_texts]
+//! - PU1 : [escape::PU1]
+//! - PU2 : [escape::PU2]
 //! - QUAD : todo
 //! - REP : todo
 //! - RI : [escape::RI]

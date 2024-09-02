@@ -276,6 +276,71 @@ pub fn select_font(font: Font) -> ControlSequence {
     ControlSequence::new(&[&font.to_string(), "0"], " D")
 }
 
+pub enum TextDelimiter {
+    End,
+    BeginPrincipal,
+    BeginSupplementary,
+    BeginSupplementaryPhoneticJapanese,
+    BeginSupplementaryPhoneticChinese,
+    EndPhonetic,
+}
+
+impl Display for TextDelimiter {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            TextDelimiter::End => "0",
+            TextDelimiter::BeginPrincipal => "1",
+            TextDelimiter::BeginSupplementary => "2",
+            TextDelimiter::BeginSupplementaryPhoneticJapanese => "3",
+            TextDelimiter::BeginSupplementaryPhoneticChinese => "4",
+            TextDelimiter::EndPhonetic => "5",
+        })
+    }
+}
+
+/// # PTX - Parallel texts
+/// 
+/// PTX is used to delimit strings of graphic characters that are communicated one after another in the data
+/// stream but that are intended to be presented in parallel with one another, usually in adjacent lines.
+/// 
+/// PTX with a parameter value of 1 indicates the beginning of the string of principal text intended to be
+/// presented in parallel with one or more strings of supplementary text.
+///
+/// PTX with a parameter value of 2, 3 or 4 indicates the beginning of a string of supplementary text that is
+/// intended to be presented in parallel with either a string of principal text or the immediately preceding
+/// string of supplementary text, if any; at the same time it indicates the end of the preceding string of
+/// principal text or of the immediately preceding string of supplementary text, if any. The end of a string of
+/// supplementary text is indicated by a subsequent occurrence of PTX with a parameter value other than 1.
+/// PTX with a parameter value of 0 indicates the end of the strings of text intended to be presented in
+/// parallel with one another.
+///
+///### NOTE
+/// PTX does not explicitly specify the relative placement of the strings of principal and supplementary
+/// parallel texts, or the relative sizes of graphic characters in the strings of parallel text. A string of
+/// supplementary text is normally presented in a line adjacent to the line containing the string of principal
+/// text, or adjacent to the line containing the immediately preceding string of supplementary text, if any.
+/// The first graphic character of the string of principal text and the first graphic character of a string of
+/// supplementary text are normally presented in the same position of their respective lines. However, a
+/// string of supplementary text longer (when presented) than the associated string of principal text may be
+/// centred on that string. In the case of long strings of text, such as paragraphs in different languages, the
+/// strings may be presented in successive lines in parallel columns, with their beginnings aligned with one
+/// another and the shorter of the paragraphs followed by an appropriate amount of "white space".
+///
+/// Japanese phonetic annotation typically consists of a few half-size or smaller Kana characters which
+/// indicate the pronunciation or interpretation of one or more Kanji characters and are presented above
+/// those Kanji characters if the character path is horizontal, or to the right of them if the character path is
+/// vertical.
+///
+/// Chinese phonetic annotation typically consists of a few Pinyin characters which indicate the
+/// pronunciation of one or more Hanzi characters and are presented above those Hanzi characters.
+/// Alternatively, the Pinyin characters may be presented in the same line as the Hanzi characters and
+/// following the respective Hanzi characters. The Pinyin characters will then be presented within enclosing
+/// pairs of parentheses
+pub fn parallel_texts(text_delimiter: TextDelimiter) -> ControlSequence {
+    ControlSequence::new(&[&text_delimiter.to_string()], "\\")
+}
+
+
 #[derive(Clone)]
 pub struct GraphicSelection {
     modes: Vec<String>,

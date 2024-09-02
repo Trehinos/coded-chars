@@ -55,8 +55,8 @@ pub mod rendition;
 pub mod mode;
 pub mod cursor;
 pub mod area;
-pub mod device {}
-pub mod tabulation {}
+pub mod device;
+pub mod tabulation;
 pub mod view;
 
 /// The page is erased and the cursor position is set to the first line and the first column.
