@@ -1,3 +1,4 @@
+
 //! This crate implements the ECMA-48 standard for coded characters in rust.
 //!
 //! Various constructions are provided to easily add control character and sequences inside text.
@@ -6,8 +7,10 @@
 //!
 //! # Standard implemented
 //! - [ecma-48](https://ecma-international.org/publications-and-standards/standards/ecma-48/) - Control Functions for Coded Character Sets
+//! 
+//! > Implementation status : **63%**
 //!
-//! ## An example : format a text printed in an ANSI terminal
+//! ## An example : format a text printed in an ECMA/ANSI terminal
 //! ```
 //! use coded_chars::control::clear_screen;
 //! use coded_chars::control::cursor::set_position;
@@ -111,7 +114,86 @@
 //! - LS2R : [escape::LS2R]
 //! - LS3 : [escape::LS3]
 //! - LS3R : [escape::LS3R]
-
+//! - MC : todo
+//! - MW : [escape::MW]
+//! - NAK : [characters::transmission::NAK]
+//! - NBH : [escape::NBH]
+//! - NEL : [escape::NEL]
+//! - NP : [control::rendition::next_page]
+//! - NUL : [characters::NUL]
+//! - OSC : [escape::OSC]
+//! - PEC : [control::rendition::expand_or_condense]
+//! - PFS : [control::area::select_page_format]
+//! - PLD : [escape::PLD]
+//! - PLU : [escape::PLU]
+//! - PM : [escape::PM]
+//! - PP : [control::rendition::previous_page]
+//! - PPA : todo
+//! - PPB : todo
+//! - PPR : todo
+//! - PTX : todo
+//! - PU1 : todo
+//! - PU2 : todo
+//! - QUAD : todo
+//! - REP : todo
+//! - RI : [escape::RI]
+//! - RIS : [escape::RIS]
+//! - RM : [control::mode::Mode::reset]
+//! - SACS : todo
+//! - SAPV : todo
+//! - SCI : [escape::SCI]
+//! - SCO : todo
+//! - SCP : todo
+//! - SD : todo
+//! - SDS : todo
+//! - SEE : todo
+//! - SEF : todo
+//! - SGR : [control::rendition::select_graphic]
+//! - SHS : todo
+//! - SI : [characters::shift::SI]
+//! - SIMD : todo
+//! - SL : todo
+//! - SLH : todo
+//! - SLL : todo
+//! - SLS : todo
+//! - SM : [control::mode::Mode::set]
+//! - SO : [characters::shift::SO]
+//! - SOH : [characters::transmission::SOH]
+//! - SOS : [escape::SOS]
+//! - SPA : [escape::SPA]
+//! - SPD : todo
+//! - SPH : [control::view::set_page_home]
+//! - SPI : todo
+//! - SPL : todo
+//! - SPQR : todo
+//! - SR : todo
+//! - SRCS : todo
+//! - SRS : todo
+//! - SSA : [escape::SSA]
+//! - SSU : todo
+//! - SSW : todo
+//! - SS2 : [escape::SS2]
+//! - SS3 : [escape::SS3]
+//! - ST : [escape::ST]
+//! - STAB : todo
+//! - STS : [escape::STS]
+//! - STX : [characters::transmission::STX]
+//! - SU : todo
+//! - SUB : [characters::SUB]
+//! - SVS : todo
+//! - SYN : [characters::transmission::SYN]
+//! - TAC : todo
+//! - TALE : todo
+//! - TATE : todo
+//! - TBC : todo
+//! - TCC : todo
+//! - TSR : todo
+//! - TSS : todo
+//! - VPA : todo
+//! - VPB : todo
+//! - VPR : todo
+//! - VT : [characters::format::VT]
+//! - VTS : [escape::VTS]
 
 pub mod characters;
 pub mod escape;
