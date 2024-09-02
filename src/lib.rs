@@ -8,7 +8,7 @@
 //! # Standard implemented
 //! - [ecma-48](https://ecma-international.org/publications-and-standards/standards/ecma-48/) - Control Functions for Coded Character Sets
 //!
-//! > Implementation status : **72%**
+//! > Implementation status : **80%**
 //!
 //! ## An example : format a text printed in an ECMA/ANSI terminal
 //! ```
