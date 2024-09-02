@@ -245,3 +245,6 @@ pub const ESC:char = '\x1B';
 
 /// Space
 pub const SPC:char = '\x20';
+
+/// Delete
+pub const DEL:char = '\x7f';
