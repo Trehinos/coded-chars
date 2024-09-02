@@ -1,4 +1,4 @@
-
+//! Provides area related control sequences.
 
 use std::fmt::{Display, Formatter};
 use crate::control::ControlSequence;
