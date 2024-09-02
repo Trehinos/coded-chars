@@ -76,7 +76,7 @@ pub const NEL: EscapeSequence = escape('E');
 /// (GATM) and on any guarded areas established by DEFINE AREA QUALIFICATION (DAQ), or by
 /// START OF GUARDED AREA (SPA) and END OF GUARDED AREA (EPA).
 ///
-/// ## NOTE
+/// ### Note
 ///
 /// The control functions for area definition (DAQ, EPA, ESA, SPA, SSA) should not be used within an SRS
 /// string or an SDS string.
@@ -89,7 +89,7 @@ pub const SSA: EscapeSequence = escape('F');
 /// stream or transferred to an auxiliary input/output device. The beginning of this string is indicated by
 /// START OF SELECTED AREA (SSA).
 ///
-/// ## NOTE
+/// ### Note
 /// 
 /// The control function for area definition (DAQ, EPA, ESA, SPA, SSA) should not be used within an SRS
 /// string or an SDS string.

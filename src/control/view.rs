@@ -51,6 +51,28 @@ pub fn justify(modes: &[JustifyMode]) -> ControlSequence {
     ControlSequence::new(&str_ref_modes, " F")
 }
 
+pub enum ScrollDirection {
+    /// SD causes the data in the presentation component to be moved by n line positions if the line orientation
+    /// is horizontal, or by n character positions if the line orientation is vertical, such that the data appear to
+    /// move down.
+    ///
+    /// The active presentation position is not affected by this control function.
+    Down,
+    
+    
+}
+
+impl Display for ScrollDirection {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            ScrollDirection::Down => "T"
+        })
+    }
+}
+
+pub fn scroll(n: usize, scroll_direction: ScrollDirection) -> ControlSequence {
+    ControlSequence::new(&[&n.to_string()], &scroll_direction.to_string())
+}
 
 /// # SPH - Set page home
 ///
@@ -62,9 +84,9 @@ pub fn justify(modes: &[JustifyMode]) -> ControlSequence {
 /// of the active presentation position shall occur.
 ///
 /// If the DEVICE COMPONENT SELECT MODE is set to DATA, SPH is used to establish at line position
-/// n in the active page (the page that contains the active data position) and subsequent pages in the data
+/// `n` in the active page (the page that contains the active data position) and subsequent pages in the data
 /// component the position to which the active data position will be moved by subsequent occurrences of
-/// FORM FEED (FF) in the data stream; where n equals the value of Pn. It is also the position ahead of
+/// FORM FEED (FF) in the data stream. It is also the position ahead of
 /// which no implicit movement of the active presentation position shall occur.
 ///
 /// The established position is called the page home position and remains in effect until the next occurrence

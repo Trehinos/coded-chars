@@ -4,7 +4,7 @@ use std::fmt::{Display, Formatter};
 use crate::control::ControlSequence;
 
 /// # ICH - Insert character
-/// 
+///
 /// If the DEVICE COMPONENT SELECT MODE (DCSM) is set to PRESENTATION, ICH is used to
 /// prepare the insertion of n characters, by putting into the erased state the active presentation position and,
 /// depending on the setting of the CHARACTER EDITING MODE (HEM), the n-1 preceding or following
@@ -32,7 +32,7 @@ pub fn insert_char(n: usize) -> ControlSequence {
 }
 
 /// # IL - Insert line
-/// 
+///
 /// If the DEVICE COMPONENT SELECT MODE (DCSM) is set to PRESENTATION, IL is used to
 /// prepare the insertion of n lines, by putting into the erased state in the presentation component the active
 /// line (the line that contains the active presentation position) and, depending on the setting of the LINE
@@ -62,7 +62,7 @@ pub fn insert_line(n: usize) -> ControlSequence {
 }
 
 /// # DCH - Delete character
-/// 
+///
 /// If the DEVICE COMPONENT SELECT MODE (DCSM) is set to PRESENTATION, DCH causes the
 /// contents of the active presentation position and, depending on the setting of the CHARACTER
 /// EDITING MODE (HEM), the contents of the n-1 preceding or following character positions to be
@@ -299,10 +299,10 @@ impl Display for TextDelimiter {
 }
 
 /// # PTX - Parallel texts
-/// 
+///
 /// PTX is used to delimit strings of graphic characters that are communicated one after another in the data
 /// stream but that are intended to be presented in parallel with one another, usually in adjacent lines.
-/// 
+///
 /// PTX with a parameter value of 1 indicates the beginning of the string of principal text intended to be
 /// presented in parallel with one or more strings of supplementary text.
 ///
@@ -314,7 +314,7 @@ impl Display for TextDelimiter {
 /// PTX with a parameter value of 0 indicates the end of the strings of text intended to be presented in
 /// parallel with one another.
 ///
-///### NOTE
+///### Note
 /// PTX does not explicitly specify the relative placement of the strings of principal and supplementary
 /// parallel texts, or the relative sizes of graphic characters in the strings of parallel text. A string of
 /// supplementary text is normally presented in a line adjacent to the line containing the string of principal
@@ -340,6 +340,295 @@ pub fn parallel_texts(text_delimiter: TextDelimiter) -> ControlSequence {
     ControlSequence::new(&[&text_delimiter.to_string()], "\\")
 }
 
+pub enum Layout {
+    FlushHome,
+    FlushHomeAndFill,
+    Center,
+    CenterAndFill,
+    FlushLimit,
+    FlushLimitAndFill,
+    FlushBoth,
+}
+
+impl Display for Layout {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            Layout::FlushHome => "0",
+            Layout::FlushHomeAndFill => "1",
+            Layout::Center => "2",
+            Layout::CenterAndFill => "3",
+            Layout::FlushLimit => "4",
+            Layout::FlushLimitAndFill => "5",
+            Layout::FlushBoth => "6",
+        })
+    }
+}
+
+/// # QUAD
+///
+/// QUAD is used to indicate the end of a string of graphic characters that are to be positioned on a single
+/// line according to the layout specified.
+///
+/// The beginning of the string to be positioned is indicated by the preceding occurrence in the data stream
+/// of either QUAD or one of the following formator functions: FORM FEED (FF), CHARACTER AND
+/// LINE POSITION (HVP), LINE FEED (LF), NEXT LINE (NEL), PAGE POSITION ABSOLUTE (PPA),
+/// PAGE POSITION BACKWARD (PPB), PAGE POSITION FORWARD (PPR), REVERSE LINE FEED
+/// (RI), LINE POSITION ABSOLUTE (VPA), LINE POSITION BACKWARD (VPB), LINE POSITION
+/// FORWARD (VPR), or LINE TABULATION (VT).
+///
+/// The line home position is established by the parameter value of SET LINE HOME (SLH). The line limit
+/// position is established by the parameter value of SET LINE LIMIT (SLL).
+pub fn quad(layouts: &[Layout]) -> ControlSequence {
+    let str_layouts: Vec<String> = layouts.iter()
+        .map(|mode| mode.to_string())
+        .collect();
+
+    let str_ref_modes: Vec<&str> = str_layouts.iter()
+        .map(AsRef::as_ref)
+        .collect();
+
+    ControlSequence::new(&str_ref_modes, " H")
+}
+
+/// # REP - Repeat
+///
+/// REP is used to indicate that the preceding character in the data stream, if it is a graphic character
+/// (represented by one or more bit combinations) including SPACE, is to be repeated `n` times.
+///
+/// If the character preceding REP is a control function or part of a control function,
+/// the effect of REP is not defined by this Standard.
+pub fn repeat(n: usize) -> ControlSequence {
+    ControlSequence::new(&[&n.to_string()], "b")
+}
+
+/// # SACS - Set additional character separation
+///
+/// SACS is used to establish extra inter-character escapement for subsequent text. The established extra
+/// escapement remains in effect until the next occurrence of SACS or of SET REDUCED CHARACTER
+/// SEPARATION (SRCS) in the data stream or until it is reset to the default value by a subsequent
+/// occurrence of CARRIAGE RETURN/LINE FEED (CR LF) or of NEXT LINE (NEL) in the data stream.
+///
+/// `n` specifies the number of units by which the inter-character escapement is enlarged.
+///
+/// The unit in which the parameter value is expressed is that established by the parameter value of SELECT
+/// SIZE UNIT (SSU).
+pub fn character_separation(n: usize) -> ControlSequence {
+    ControlSequence::new(&[&n.to_string()], " \\")
+}
+
+#[derive(Clone)]
+pub struct PresentationVariant {
+    modes: Vec<String>,
+}
+impl PresentationVariant {
+    pub fn new() -> Self { Self { modes: vec![] } }
+
+    /// Default presentation (implementation-defined); cancels the effect of any preceding occurrence of
+    /// SAPV in the data stream.
+    pub fn default(&mut self) -> &mut Self { self.add("0") }
+
+    /// The decimal digits are presented by means of the graphic symbols used in the Latin script.
+    pub fn latin_decimal(&mut self) -> &mut Self { self.add("1") }
+
+    /// The decimal digits are presented by means of the graphic symbols used in the Arabic script, i.e. the Hindi symbols.
+    pub fn arabic_decimal(&mut self) -> &mut Self { self.add("2") }
+
+    /// When the direction of the character path is right-to-left, each of the graphic characters in the graphic
+    /// character set(s) in use which is one of a left/right-handed pair (parentheses, square brackets, curly
+    /// brackets, greater-than/less-than signs, etc.) is presented as "mirrored", i.e. as the other member of the
+    /// pair. For example, the coded graphic character given the name LEFT PARENTHESIS is presented as
+    /// RIGHT PARENTHESIS, and vice versa.
+    pub fn mirror_horizontal(&mut self) -> &mut Self { self.add("3") }
+
+    /// When the direction of the character path is right-to-left, all graphic characters which represent
+    /// operators and delimiters in mathematical formulae and which are not symmetrical about a vertical
+    /// axis are presented as mirrored about that vertical axis.
+    pub fn mirror_vertical(&mut self) -> &mut Self { self.add("4") }
+
+    /// The following graphic character is presented in its isolated form.
+    pub fn character_isolate(&mut self) -> &mut Self { self.add("5") }
+
+    /// The following graphic character is presented in its initial form.
+    pub fn character_initial(&mut self) -> &mut Self { self.add("6") }
+
+    /// The following graphic character is presented in its medial form.
+    pub fn character_medial(&mut self) -> &mut Self { self.add("7") }
+
+    /// The following graphic character is presented in its final form.
+    pub fn character_final(&mut self) -> &mut Self { self.add("8") }
+
+    /// Where the bit combination 0x2E is intended to represent a decimal mark in a decimal number it shall
+    /// be presented by means of the graphic symbol FULL STOP.
+    pub fn decimal_stop(&mut self) -> &mut Self { self.add("9") }
+
+    /// Where the bit combination 0x2E is intended to represent a decimal mark in a decimal number it shall
+    /// be presented by means of the graphic symbol COMMA.
+    pub fn decimal_comma(&mut self) -> &mut Self { self.add("10") }
+
+    /// Vowels are presented above or below the preceding character.
+    pub fn vowel_above_or_below(&mut self) -> &mut Self { self.add("11") }
+
+    /// Vowels are presented after the preceding character.
+    pub fn vowel_after(&mut self) -> &mut Self { self.add("12") }
+
+    /// Contextual shape determination of Arabic scripts, including the LAM-ALEPH ligature but excluding
+    /// all other Arabic ligatures.
+    pub fn arabic_ligature_aleph(&mut self) -> &mut Self { self.add("13") }
+
+    /// Contextual shape determination of Arabic scripts, excluding all Arabic ligatures.
+    pub fn arabic_ligature_none(&mut self) -> &mut Self { self.add("14") }
+
+    /// Cancels the effect of parameter values [Self::mirror_horizontal] and [Self::mirror_vertical].
+    pub fn no_mirror(&mut self) -> &mut Self { self.add("15") }
+
+    /// Vowels are not presented.
+    pub fn no_vowel(&mut self) -> &mut Self { self.add("16") }
+
+    /// When the string direction is right-to-left, the italicized characters are slanted to the left; when the
+    /// string direction is left-to-right, the italicized characters are slanted to the right.
+    pub fn italic_direction(&mut self) -> &mut Self { self.add("17") }
+
+    /// Contextual shape determination of Arabic scripts is not used, the graphic characters - including the
+    /// digits - are presented in the form they are stored (Pass-through).
+    pub fn arabic_no_context_with_digit(&mut self) -> &mut Self { self.add("18") }
+
+    /// Contextual shape determination of Arabic scripts is not used, the graphic characters - excluding the
+    /// digits - are presented in the form they are stored (Pass-through).
+    pub fn arabic_no_context(&mut self) -> &mut Self { self.add("19") }
+
+    /// The graphic symbols used to present the decimal digits are device dependent.
+    pub fn device_digit(&mut self) -> &mut Self { self.add("20") }
+
+    /// Establishes the effect of parameter values [Self::character_isolate], [Self::character_initial],
+    /// [Self::character_medial], and [Self::character_final] for the following graphic characters until
+    /// cancelled.
+    pub fn character_establish(&mut self) -> &mut Self { self.add("21") }
+
+    /// Cancels the effect of parameter value [Self::character_establish], i.e. re-establishes the effect
+    /// of parameter values [Self::character_isolate], [Self::character_initial],
+    /// [Self::character_medial], and [Self::character_final] for the next single graphic character only.
+    pub fn character_cancel(&mut self) -> &mut Self { self.add("22") }
+
+    pub fn get(&self) -> ControlSequence {
+        ControlSequence::new(&self.modes.iter().map(|s| s.as_str()).collect::<Vec<_>>(), " ]")
+    }
+    fn add(&mut self, s: &str) -> &mut Self {
+        self.modes.push(s.to_string());
+        self
+    }
+}
+
+/// # SAPV
+///
+/// SAPV is used to specify one or more variants for the presentation of subsequent text.
+pub fn select_alternative() -> PresentationVariant {
+    PresentationVariant::new()
+}
+
+impl Display for PresentationVariant {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.get())
+    }
+}
+
+pub enum Orientation {
+    /// 0°
+    North,
+    /// 45°
+    NorthWest,
+    /// 90°
+    West,
+    /// 135°
+    SouthWest,
+    /// 180°
+    South,
+    /// 225°
+    SouthEast,
+    /// 270°
+    East,
+    /// 315°
+    NorthEast,
+}
+
+impl Display for Orientation {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            Orientation::North => "0",
+            Orientation::NorthWest => "1",
+            Orientation::West => "2",
+            Orientation::SouthWest => "3",
+            Orientation::South => "4",
+            Orientation::SouthEast => "5",
+            Orientation::East => "6",
+            Orientation::NorthEast => "7",
+        })
+    }
+}
+
+/// # SCO - Select character orientation
+///
+/// SCO is used to establish the amount of rotation of the graphic characters following in the data stream.
+/// The established value remains in effect until the next occurrence of SCO in the data stream.
+///
+///
+pub fn character_orientation(orientation: Orientation) -> ControlSequence {
+    ControlSequence::new(&[&orientation.to_string()], " e")
+}
+
+pub enum CharacterPath {
+    /// left-to-right (in the case of horizontal line orientation), or top-to-bottom (in the case of vertical line
+    /// orientation).
+    LeftToRight,
+    
+    /// right-to-left (in the case of horizontal line orientation), or bottom-to-top (in the case of vertical line
+    /// orientation).
+    RightToLeft,
+}
+
+impl Display for CharacterPath {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            CharacterPath::LeftToRight => "1",
+            CharacterPath::RightToLeft => "2",
+        })
+    }
+}
+
+pub enum PathEffect {
+    /// Implementation dependant.
+    Undefined,
+    
+    /// The content of the active line in the presentation component (the line that contains the active
+    /// presentation position) is updated to correspond to the content of the active line in the data component
+    /// (the line that contains the active data position) according to the newly established character path
+    /// characteristics in the presentation component; the active data position is moved to the first character
+    /// position in the active line in the data component, the active presentation position in the presentation
+    /// component is updated accordingly.
+    UpdatePresentation,
+    
+    /// The content of the active line in the data component (the line that contains the active data position) is
+    /// updated to correspond to the content of the active line in the presentation component (the line that
+    /// contains the active presentation position) according to the newly established character path
+    /// characteristics of the presentation component; the active presentation position is moved to the first
+    /// character position in the active line in the presentation component, the active data position in the data
+    /// component is updated accordingly.
+    UpdateData,
+}
+
+pub fn character_path(character_path: CharacterPath, path_effect: PathEffect) -> ControlSequence {
+    ControlSequence::new(&[&character_path.to_string(), &path_effect.to_string()], " k")
+}
+
+impl Display for PathEffect {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            PathEffect::Undefined => "0",
+            PathEffect::UpdatePresentation => "1",
+            PathEffect::UpdateData => "2",
+        })
+    }
+}
+
 
 #[derive(Clone)]
 pub struct GraphicSelection {
@@ -351,23 +640,23 @@ impl GraphicSelection {
     /// Default rendition (implementation-defined), cancels the effect of any preceding occurrence of SGR in
     /// the data stream regardless of the setting of the GRAPHIC RENDITION COMBINATION MODE (GRCM).
     pub fn default(&mut self) -> &mut Self { self.add("0") }
-    
+
     /// Bold or increased intensity
     pub fn bold(&mut self) -> &mut Self { self.add("1") }
-    
+
     /// Faint, decreased intensity or second color
     pub fn faint(&mut self) -> &mut Self { self.add("2") }
     pub fn italic(&mut self) -> &mut Self { self.add("3") }
     pub fn underline(&mut self) -> &mut Self { self.add("4") }
-    
+
     /// Slowly blinking (less than 150/minute)
     pub fn slow_blink(&mut self) -> &mut Self { self.add("5") }
-    
+
     /// Rapidly blinking (150/minute or more)
     pub fn fast_blink(&mut self) -> &mut Self { self.add("6") }
     pub fn negative(&mut self) -> &mut Self { self.add("7") }
     pub fn conceal(&mut self) -> &mut Self { self.add("8") }
-    
+
     /// Crossed-out (characters still legible but marked as to be deleted)
     pub fn cross(&mut self) -> &mut Self { self.add("9") }
     pub fn primary_font(&mut self) -> &mut Self { self.add("10") }
@@ -382,22 +671,22 @@ impl GraphicSelection {
     pub fn alter9_font(&mut self) -> &mut Self { self.add("19") }
     pub fn gothic_font(&mut self) -> &mut Self { self.add("20") }
     pub fn double_underline(&mut self) -> &mut Self { self.add("21") }
-    
+
     /// Normal color or normal intensity
     pub fn not_bold_or_faint(&mut self) -> &mut Self { self.add("22") }
-    
+
     /// Not italicized, not gothic font
     pub fn not_italic(&mut self) -> &mut Self { self.add("23") }
-    
+
     /// Not underline (neither singly or doubly)
     pub fn not_underline(&mut self) -> &mut Self { self.add("24") }
-    
+
     /// Steady (not blinking)
     pub fn not_blink(&mut self) -> &mut Self { self.add("25") }
-    
+
     /// Positive image
     pub fn not_negative(&mut self) -> &mut Self { self.add("27") }
-    
+
     /// Revealed characters
     pub fn not_conceal(&mut self) -> &mut Self { self.add("28") }
     pub fn not_cross(&mut self) -> &mut Self { self.add("29") }

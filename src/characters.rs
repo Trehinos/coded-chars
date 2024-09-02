@@ -61,7 +61,7 @@ pub mod device {
     /// purpose, it may be used to restore a device to the basic mode of operation (see also DC2 and DC3), or
     /// any other device control function not provided by other DCs.
     /// 
-    /// ## Note
+    /// ### Note
     /// When used for data flow control, DC1 is sometimes called **X-ON**.
     pub const DC1: char = '\x11';
 
@@ -79,7 +79,7 @@ pub mod device {
     /// normal operation). If it is not required for this purpose, it may be used for any other device control
     /// function not provided by other DCs.
     /// 
-    /// ## NOTE
+    /// ### Note
     /// 
     /// When used for data flow control, DC3 is sometimes called "X-OFF".
     pub const DC3: char = '\x13';
@@ -183,7 +183,7 @@ pub mod shift {
     /// data stream to be changed.  
     /// The use of SI is defined in Standard ECMA-35.
     /// 
-    /// ## NOTE
+    /// ### Note
     /// 
     /// SI is used in 7-bit environments only; in 8-bit environments LOCKING-SHIFT ZERO (LS0) is used
     /// instead.
@@ -196,7 +196,7 @@ pub mod shift {
     /// the data stream to be changed.  
     /// The use of SO is defined in Standard ECMA-35.
     ///
-    /// ## NOTE
+    /// ### Note
     ///
     /// SO is used in 7-bit environments only; in 8-bit environments LOCKING-SHIFT ONE (LS1) is used
     /// instead.

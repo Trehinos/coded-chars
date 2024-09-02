@@ -133,6 +133,12 @@ impl Display for CopyStatus {
     }
 }
 
+/// # MC - Media copy
+///
+/// MC is used either to initiate a transfer of data from or to an auxiliary input/output device or to enable or
+/// disable the relay of the received data stream to an auxiliary input/output device.
+/// 
+/// This control function may not be used to switch on or off an auxiliary device.
 pub fn media_copy(copy_status: CopyStatus) -> ControlSequence {
     ControlSequence::new(&[&copy_status.to_string()], "i")
 }
