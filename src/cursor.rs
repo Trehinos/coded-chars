@@ -24,7 +24,7 @@ pub fn tabulation_control(tabulation_control: TabulationControl) -> ControlSeque
 ///
 /// CPR may be solicited by a DEVICE STATUS REPORT (DSR) or be sent unsolicited.
 pub fn position_report(l: usize, c: usize) -> ControlSequence {
-    ControlSequence::new(&[&l.to_string(), &c.to_string()], "H")
+    ControlSequence::new(&[&l.to_string(), &c.to_string()], "R")
 }
 
 /// # CUP - Cursor position
