@@ -2,6 +2,19 @@
 
 use std::fmt::{Display, Formatter};
 use crate::control::ControlSequence;
+use crate::escape::{escape, EscapeSequence};
+
+/// # Break permitted here
+///
+/// BPH is used to indicate a point where a line break may occur when text is formatted. BPH may occur
+/// between two graphic characters, either or both of which may be SPACE.
+pub const BPH: EscapeSequence = escape('B');
+
+/// # No break here
+///
+/// NBH is used to indicate a point where a line break shall not occur when text is formatted. NBH may
+/// occur between two graphic characters either or both of which may be SPACE.
+pub const NBH: EscapeSequence = escape('C');
 
 /// # DTA - Dimension text area
 ///
@@ -696,7 +709,7 @@ impl Display for MovementDirection {
 /// ```
 ///
 /// // Direct format
-/// use coded_chars::control::presentation::select_graphic;
+/// use coded_chars::presentation::select_graphic;
 /// println!("Hello {}{}{} !", select_graphic().fg_red().bold().underline(), "World", select_graphic().default());
 /// ```
 pub fn select_graphic() -> GraphicSelection {
@@ -815,7 +828,7 @@ impl Display for GraphicSelection {
 ///
 /// ### Example
 /// ```
-/// use coded_chars::control::presentation::{format_str, select_graphic};
+/// use coded_chars::presentation::{format_str, select_graphic};
 /// let formatted = format_str(
 ///     "World",
 ///     select_graphic().fg_red().bold().underline()

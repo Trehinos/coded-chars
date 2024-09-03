@@ -6,7 +6,7 @@ use crate::control::ControlSequence;
 ///
 /// ### Examples
 /// ```
-/// use coded_chars::control::mode::mode;
+/// use coded_chars::mode::mode;
 ///
 /// // Set a mode (EXPLICIT-BDSM mode)
 /// println!("{}", mode().bi_directional_support().set());
@@ -81,11 +81,11 @@ impl Mode {
     /// ### Note
     /// Control functions affected are: EA, ECH, ED, EF, EL.
     ///
-    /// - [crate::control::editor::erase]
-    /// - [crate::control::editor::erase_char]
-    /// - [crate::control::editor::erase_in_page]
-    /// - [crate::control::editor::erase_in_field]
-    /// - [crate::control::editor::erase_in_line]
+    /// - [crate::editor::erase]
+    /// - [crate::editor::erase_char]
+    /// - [crate::editor::erase_in_page]
+    /// - [crate::editor::erase_in_field]
+    /// - [crate::editor::erase_in_line]
     pub fn erasure(&mut self) -> &mut Self { self.add("6") }
 
     /// # VEM - Line editing mode
@@ -115,8 +115,8 @@ impl Mode {
     /// ### Note
     /// Control functions affected are: DL, IL.
     ///
-    /// - [crate::control::editor::delete_line]
-    /// - [crate::control::editor::insert_line]
+    /// - [crate::editor::delete_line]
+    /// - [crate::editor::insert_line]
     pub fn line_editing(&mut self) -> &mut Self { self.add("7") }
 
     /// # BDSM - Bidirectional support mode
@@ -140,24 +140,24 @@ impl Mode {
     /// Control functions affected are: CPR, CR, DCH, DL, EA, ECH, ED, EF, EL, ICH, IL, LF, NEL, RI, SLH,
     /// SLL, SPH, SPL.
     ///
-    /// - [crate::control::cursor::position_report]
-    /// - [crate::characters::format::CR],
-    /// - [crate::control::editor::delete_char],
-    /// - [crate::control::editor::delete_line],
-    /// - [crate::control::editor::erase],
-    /// - [crate::control::editor::erase_char]
-    /// - [crate::control::editor::erase_in_page]
-    /// - [crate::control::editor::erase_in_field]
-    /// - [crate::control::editor::erase_in_line]
-    /// - [crate::control::editor::insert_char]
-    /// - [crate::control::editor::insert_line]
-    /// - [crate::characters::format::LF],
-    /// - [crate::escape::NEL],
-    /// - [crate::escape::RI],
-    /// - [crate::control::presentation::line_home],
-    /// - [crate::control::presentation::line_limit],
-    /// - [crate::control::presentation::page_home],
-    /// - [crate::control::presentation::page_limit].
+    /// - [crate::cursor::position_report]
+    /// - [crate::format::CR],
+    /// - [crate::editor::delete_char],
+    /// - [crate::editor::delete_line],
+    /// - [crate::editor::erase],
+    /// - [crate::editor::erase_char]
+    /// - [crate::editor::erase_in_page]
+    /// - [crate::editor::erase_in_field]
+    /// - [crate::editor::erase_in_line]
+    /// - [crate::editor::insert_char]
+    /// - [crate::editor::insert_line]
+    /// - [crate::format::LF],
+    /// - [crate::format::NEL],
+    /// - [crate::format::RI],
+    /// - [crate::presentation::line_home],
+    /// - [crate::presentation::line_limit],
+    /// - [crate::presentation::page_home],
+    /// - [crate::presentation::page_limit].
     ///
     pub fn device_component_select(&mut self) -> &mut Self { self.add("9") }
 
@@ -189,8 +189,8 @@ impl Mode {
     /// ### Note
     /// Control functions affected are: DCH, ICH.
     ///
-    /// - [crate::control::editor::delete_char],
-    /// - [crate::control::editor::insert_char].
+    /// - [crate::editor::delete_char],
+    /// - [crate::editor::insert_char].
     pub fn character_editing(&mut self) -> &mut Self { self.add("10") }
 
     /// # SRM - Send/receive mode
@@ -269,11 +269,11 @@ impl Mode {
     /// ### Note
     /// Control functions affected are: CTC, DL, HTS, IL, TBC.
     ///
-    /// - [crate::control::cursor::tabulation_control],
-    /// - [crate::control::editor::delete_line],
-    /// - [crate::escape::HTS],
-    /// - [crate::control::editor::insert_line].
-    /// - [crate::control::format::clear_tabulation].
+    /// - [crate::cursor::tabulation_control],
+    /// - [crate::editor::delete_line],
+    /// - [crate::format::HTS],
+    /// - [crate::editor::insert_line].
+    /// - [crate::format::clear_tabulation].
     pub fn tabulation_stop(&mut self) -> &mut Self { self.add("18") }
     
     /// # GRCM - Graphic rendition combination mode
@@ -286,7 +286,7 @@ impl Mode {
     /// aspects remain unchanged.
     /// 
     /// ### Note
-    /// Control function affected is SGR : [crate::control::presentation::select_graphic].
+    /// Control function affected is SGR : [crate::presentation::select_graphic].
     pub fn graphic_rendition_combination(&mut self) -> &mut Self { self.add("21") }
 
     /// # SM - Set Mode
@@ -310,7 +310,7 @@ impl Mode {
 ///
 /// ### Example
 /// ```
-/// use coded_chars::control::mode::mode;
+/// use coded_chars::mode::mode;
 ///
 /// // Sets the DCSM mode to PRESENTATION and the HEM mode to FOLLOWING.
 /// mode().device_component_select().character_editing().set().exec();

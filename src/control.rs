@@ -1,7 +1,7 @@
-//! This module provides the CSI sequences.
+//! This module defines the [ControlSequence] struct which represent sequence introduced by **CSI**.
 
 use std::fmt::{Display, Formatter};
-use crate::escape::CSI;
+use crate::introducers::CSI;
 
 /// A control sequence is a string of bit combinations starting with the control function CONTROL
 /// SEQUENCE INTRODUCER (CSI).
@@ -11,8 +11,8 @@ use crate::escape::CSI;
 ///
 /// To "execute" a control sequence you can print it or call the method `exec` :
 /// ```
-/// use coded_chars::control::ControlSequence;
 ///
+/// use coded_chars::control::ControlSequence;
 /// let sequence = ControlSequence::new(&["1", "1"], "H");
 ///
 /// print!("{}", sequence); // Prints \x1b[1;1H
@@ -24,7 +24,7 @@ use crate::escape::CSI;
 ///
 /// ```
 /// // This example is equivalent to the above example :
-/// use coded_chars::control::cursor::set_position;
+/// use coded_chars::cursor::set_position;
 ///
 /// let sequence = set_position(1, 1); // Returns a ControlSequence
 /// sequence.exec(); // Prints \x1b[1;1H
@@ -54,31 +54,4 @@ impl Display for ControlSequence {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}{}{}", CSI, self.arguments.join(";"), self.end)
     }
-}
-
-pub mod mode;
-pub mod cursor;
-pub mod device;
-pub mod display;
-pub mod editor;
-pub mod presentation;
-pub mod format;
-
-/// The page is erased and the cursor position is set to the first line and the first column.
-///
-/// - The ANSI/ECMA printed function is : `ED(2),CUP(1,1)`
-/// - The ANSI/ECMA printed sequence is : `\x1b[2J\x1b[1;1H`
-///
-/// This function is a shorthand for :
-/// ```
-/// use coded_chars::control::cursor::set_position;
-/// use coded_chars::control::editor::{erase_in_page, AreaPosition};
-/// print!(
-///     "{}{}",
-///     erase_in_page(AreaPosition::Whole),
-///     set_position(1, 1)
-/// );
-/// ```
-pub fn clear_screen() {
-    print!("{}{}", editor::erase_in_page(editor::AreaPosition::Whole), cursor::set_position(1, 1));
 }

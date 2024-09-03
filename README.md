@@ -19,8 +19,8 @@ This crate does not use a concept of "styles" or any kind of abstraction other t
 
 ```rust
 use crate::control::clear_screen;
-use crate::control::cursor::set_position;
-use crate::control::presentation::{format_str, select_graphic};
+use crate::cursor::set_position;
+use crate::presentation::{format_str, select_graphic};
 
 // Direct format
 println!("Hello {}World{} !", select_graphic().fg_red().bold().underline(), select_graphic().default());

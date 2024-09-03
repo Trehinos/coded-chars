@@ -3,58 +3,6 @@
 use std::fmt::{Display, Formatter};
 use crate::control::ControlSequence;
 
-/// # DAQ - Define area qualification
-///
-/// DAQ is used to indicate that the active presentation position in the presentation component is the first
-/// character position of a qualified area. The last character position of the qualified area is the character
-/// position in the presentation component immediately preceding the first character position of the
-/// following qualified area.
-///
-/// This control function operates independently of the setting of the TABULATION STOP MODE (TSM).
-/// The character tabulation stop set by parameter value 7 applies to the active line only
-///
-/// ### Note
-/// The control functions for area definition (DAQ, EPA, ESA, SPA, SSA) should not be used within an SRS
-/// string or an SDS string.
-pub fn area_qualification(qualification: Qualification) -> ControlSequence {
-    ControlSequence::new(&[&qualification.to_string()], "o")
-}
-
-#[derive(Copy, Clone, Debug)]
-pub enum Qualification {
-    UnprotectNoGuard,
-    ProtectGuard,
-    Character,
-    Numeric,
-    Alphabet,
-    AlignLast,
-    FillZero,
-    SetTabStop,
-    Protect,
-    FillSpace,
-    AlignFirst,
-    Reverse,
-}
-
-impl Display for Qualification {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", match self {
-            Qualification::UnprotectNoGuard => "0",
-            Qualification::ProtectGuard => "1",
-            Qualification::Character => "2",
-            Qualification::Numeric => "3",
-            Qualification::Alphabet => "4",
-            Qualification::AlignLast => "5",
-            Qualification::FillZero => "6",
-            Qualification::SetTabStop => "7",
-            Qualification::Protect => "8",
-            Qualification::FillSpace => "9",
-            Qualification::AlignFirst => "10",
-            Qualification::Reverse => "11",
-        })
-    }
-}
-
 /// # ICH - Insert character
 ///
 /// If the DEVICE COMPONENT SELECT MODE (DCSM) is set to PRESENTATION, ICH is used to

@@ -2,6 +2,54 @@
 
 use std::fmt::{Display, Formatter};
 use crate::control::ControlSequence;
+use crate::escape::{escape, EscapeSequence};
+
+/// # Device control 1
+///
+/// DC1 is primarily intended for turning on or starting an ancillary device. If it is not required for this
+/// purpose, it may be used to restore a device to the basic mode of operation (see also DC2 and DC3), or
+/// any other device control function not provided by other DCs.
+///
+/// ### Note
+/// When used for data flow control, DC1 is sometimes called **X-ON**.
+pub const DC1: char = '\x11';
+
+/// # Device control 2
+///
+/// DC2 is primarily intended for turning on or starting an ancillary device. If it is not required for this
+/// purpose, it may be used to set a device to a special mode of operation (in which case DC1 is used to
+/// restore the device to the basic mode), or for any other device control function not provided by other DCs.
+pub const DC2: char = '\x12';
+
+/// # Device control 3
+///
+/// DC3 is primarily intended for turning off or stopping an ancillary device. This function may be a
+/// secondary level stop, for example wait, pause, stand-by or halt (in which case DC1 is used to restore
+/// normal operation). If it is not required for this purpose, it may be used for any other device control
+/// function not provided by other DCs.
+///
+/// ### Note
+///
+/// When used for data flow control, DC3 is sometimes called "X-OFF".
+pub const DC3: char = '\x13';
+
+/// # Device control 4
+///
+/// DC4 is primarily intended for turning off, stopping or interrupting an ancillary device. If it is not
+/// required for this purpose, it may be used for any other device control function not provided by other DCs.
+pub const DC4: char = '\x14';
+
+/// Disable manual input
+pub const DMI: EscapeSequence = escape('`');
+
+/// Enable manual input
+pub const EMI: EscapeSequence = escape('b');
+
+/// Interrupt
+pub const INT: EscapeSequence = escape('a');
+
+/// Reset to initial state
+pub const RIS: EscapeSequence = escape('c');
 
 /// # DA - Device attributes
 ///

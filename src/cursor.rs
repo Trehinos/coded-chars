@@ -2,7 +2,7 @@
 
 use std::fmt::{Display, Formatter};
 use crate::control::ControlSequence;
-use crate::control::format::TabulationControl;
+use crate::format::TabulationControl;
 
 /// # CTC - Cursor tabulation control
 ///
