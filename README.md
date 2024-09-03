@@ -41,9 +41,7 @@ println!("This line is printed on the fifth line.");
 
 ### Current status
 
-This crate is still in active development.
-
-The API shall not change but a lot is yet to add.
+This crate development is achieved.
 
 Contact the author at [trehinos@gmail.com](mailto:trehinos@gmail.com).
 
