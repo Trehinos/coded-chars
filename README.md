@@ -43,7 +43,7 @@ println!("This line is printed on the fifth line.");
 
 This crate development is achieved.
 
-Contact the author at [trehinos@gmail.com](mailto:trehinos@gmail.com).
+Contact the author at [dev@trehinos.eu](mailto:dev@trehinos.eu).
 
 ### License
 &copy; 2024 Sébastien Geldreich  
