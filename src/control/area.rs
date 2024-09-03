@@ -204,7 +204,7 @@ pub enum Qualification {
     Protect,
     FillSpace,
     AlignFirst,
-    Reverse
+    Reverse,
 }
 
 impl Display for Qualification {
@@ -241,4 +241,57 @@ impl Display for Qualification {
 /// string or an SDS string.
 pub fn define_qualification(qualification: Qualification) -> ControlSequence {
     ControlSequence::new(&[&qualification.to_string()], "o")
+}
+
+
+pub enum LineSpacing {
+    Per25mm6Lines,
+    Per25mm4Lines,
+    Per25mm3Lines,
+    Per25mm12Lines,
+    Per25mm8Lines,
+    Per30mm6Lines,
+    Per30mm4Lines,
+    Per30mm3Lines,
+    Per30mm12Lines,
+    Per25mm2Lines,
+}
+
+impl Display for LineSpacing {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            LineSpacing::Per25mm6Lines => "0",
+            LineSpacing::Per25mm4Lines => "1",
+            LineSpacing::Per25mm3Lines => "2",
+            LineSpacing::Per25mm12Lines => "3",
+            LineSpacing::Per25mm8Lines => "4",
+            LineSpacing::Per30mm6Lines => "5",
+            LineSpacing::Per30mm4Lines => "6",
+            LineSpacing::Per30mm3Lines => "7",
+            LineSpacing::Per30mm12Lines => "8",
+            LineSpacing::Per25mm2Lines => "9",
+        })
+    }
+}
+
+/// # SVS - Select line spacing
+/// 
+/// SVS is used to establish the line spacing for subsequent text. The established spacing remains in effect
+/// until the next occurrence of SVS or of SET LINE SPACING (SLS) or of SPACING INCREMENT (SPI)
+/// in the data stream.
+pub fn select_line_spacing(line_spacing: LineSpacing) -> ControlSequence {
+    ControlSequence::new(&[&line_spacing.to_string()], " L")
+}
+
+/// # TSS - Thin space specification
+/// 
+/// TSS is used to establish the width of a thin space for subsequent text. The established width remains in
+/// effect until the next occurrence of TSS in the data stream, see annex C.
+///
+/// `width` specifies the width of the thin space.
+///
+/// The unit in which the parameter value is expressed is that established by the parameter value of SELECT
+/// SIZE UNIT (SSU).
+pub fn specify_thin_space(width: usize) -> ControlSequence {
+    ControlSequence::new(&[&width.to_string()], " E")
 }

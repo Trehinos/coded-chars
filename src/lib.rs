@@ -8,8 +8,6 @@
 //! # Standard implemented
 //! - [ecma-48](https://ecma-international.org/publications-and-standards/standards/ecma-48/) - Control Functions for Coded Character Sets
 //!
-//! > Implementation status : **92%**
-//!
 //! ## An example : format a text printed in an ECMA/ANSI terminal
 //! ```
 //! use coded_chars::control::clear_screen;
@@ -180,7 +178,7 @@
 //! - STX : [characters::transmission::STX]
 //! - SU : [control::view::ScrollDirection::Up] (see [control::view::scroll])
 //! - SUB : [characters::SUB]
-//! - SVS : todo
+//! - SVS : [control::area::select_line_spacing]
 //! - SYN : [characters::transmission::SYN]
 //! - TAC : [control::tabulation::align_center]
 //! - TALE : [control::tabulation::align_trailing]
@@ -188,10 +186,10 @@
 //! - TBC : [control::tabulation::clear]
 //! - TCC : [control::tabulation::center_on_char]
 //! - TSR : [control::tabulation::remove_stop]
-//! - TSS : todo
-//! - VPA : todo
-//! - VPB : todo
-//! - VPR : todo
+//! - TSS : [control::area::specify_thin_space]
+//! - VPA : [control::cursor::line_position]
+//! - VPB : [control::cursor::line_backward]
+//! - VPR : [control::cursor::line_forward]
 //! - VT : [characters::format::VT]
 //! - VTS : [escape::VTS]
 

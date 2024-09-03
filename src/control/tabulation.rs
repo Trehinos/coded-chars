@@ -1,3 +1,5 @@
+//! This module provides tabulation-related control functions.
+
 use std::fmt::{Display, Formatter};
 use crate::control::ControlSequence;
 

@@ -1,3 +1,5 @@
+//! Control sequences that are devices-related.
+
 use std::fmt::{Display, Formatter};
 use crate::control::ControlSequence;
 

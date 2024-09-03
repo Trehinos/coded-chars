@@ -1,3 +1,5 @@
+//! This module helps manage ways things are printed.
+
 use std::fmt::{Display, Formatter};
 use crate::control::ControlSequence;
 use crate::control::rendition::{CharacterPath, PathEffect};

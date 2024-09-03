@@ -175,3 +175,21 @@ impl Display for MovementDirection {
 pub fn select_implicit(movement_direction: MovementDirection) -> ControlSequence {
     ControlSequence::new(&[&movement_direction.to_string()], "^")
 }
+
+/// # VPA - Line position absolute
+/// 
+/// VPA causes the active data position to be moved to line position n in the data component in a direction
+/// parallel to the line progression.
+pub fn line_position(n: usize) -> ControlSequence { ControlSequence::new(&[&n.to_string()], "d") }
+
+/// # VPB - Line position backward
+/// 
+/// VPB causes the active data position to be moved by n line positions in the data component in a direction
+/// opposite to that of the line progression.
+pub fn line_backward(n: usize) -> ControlSequence { ControlSequence::new(&[&n.to_string()], "k") }
+
+/// # VPR - Line position forward
+/// 
+/// VPR causes the active data position to be moved by n line positions in the data component in a direction
+/// parallel to the line progression.
+pub fn line_forward(n: usize) -> ControlSequence { ControlSequence::new(&[&n.to_string()], "e") }
