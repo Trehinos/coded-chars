@@ -175,19 +175,19 @@
 //! - SS2 : [escape::SS2]
 //! - SS3 : [escape::SS3]
 //! - ST : [escape::ST]
-//! - STAB : todo
+//! - STAB : [control::tabulation::select_tabulation]
 //! - STS : [escape::STS]
 //! - STX : [characters::transmission::STX]
 //! - SU : [control::view::ScrollDirection::Up] (see [control::view::scroll])
 //! - SUB : [characters::SUB]
 //! - SVS : todo
 //! - SYN : [characters::transmission::SYN]
-//! - TAC : todo
-//! - TALE : todo
-//! - TATE : todo
-//! - TBC : todo
-//! - TCC : todo
-//! - TSR : todo
+//! - TAC : [control::tabulation::align_center]
+//! - TALE : [control::tabulation::align_trailing]
+//! - TATE : [control::tabulation::align_trailing]
+//! - TBC : [control::tabulation::clear]
+//! - TCC : [control::tabulation::center_on_char]
+//! - TSR : [control::tabulation::remove_stop]
 //! - TSS : todo
 //! - VPA : todo
 //! - VPB : todo

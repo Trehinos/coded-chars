@@ -235,7 +235,7 @@ impl Display for Combination {
 /// example, in Japanese text a pair of characters may be presented side-by-side, and occupy the space of a
 /// normal-size Kanji character.
 pub fn character_combination(combination: Combination) -> ControlSequence {
-    ControlSequence::new(&[&combination.to_string()], " ^")
+    ControlSequence::new(&[&combination.to_string()], " _")
 }
 
 pub enum Font {
