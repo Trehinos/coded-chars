@@ -137,7 +137,7 @@ impl Display for CopyStatus {
 ///
 /// MC is used either to initiate a transfer of data from or to an auxiliary input/output device or to enable or
 /// disable the relay of the received data stream to an auxiliary input/output device.
-/// 
+///
 /// This control function may not be used to switch on or off an auxiliary device.
 pub fn media_copy(copy_status: CopyStatus) -> ControlSequence {
     ControlSequence::new(&[&copy_status.to_string()], "i")
@@ -149,4 +149,32 @@ pub fn media_copy(copy_status: CopyStatus) -> ControlSequence {
 /// another sheet to be loaded into the printing device from a specified paper bin.
 pub fn eject_and_feed(bin: usize, stacker: usize) -> ControlSequence {
     ControlSequence::new(&[&bin.to_string(), &stacker.to_string()], " Y")
+}
+
+pub enum PrintQuality {
+    /// Highest available print quality, low print speed.
+    Highest,
+    /// Medium print quality, medium print speed.
+    Medium,
+    /// Draft print quality, highest available print speed.
+    Draft,
+}
+
+impl Display for PrintQuality {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            PrintQuality::Highest => "0",
+            PrintQuality::Medium => "1",
+            PrintQuality::Draft => "2",
+        })
+    }
+}
+
+/// # SPQR - Select print quality and rapidity
+/// 
+/// SPQR is used to select the relative print quality and the print speed for devices the output quality and
+/// speed of which are inversely related. The selected values remain in effect until the next occurrence of
+/// SPQR in the data stream. 
+pub fn print_quality(print_quality: PrintQuality) -> ControlSequence {
+    ControlSequence::new(&[&print_quality.to_string()], " X")
 }

@@ -8,7 +8,7 @@
 //! # Standard implemented
 //! - [ecma-48](https://ecma-international.org/publications-and-standards/standards/ecma-48/) - Control Functions for Coded Character Sets
 //!
-//! > Implementation status : **86%**
+//! > Implementation status : **92%**
 //!
 //! ## An example : format a text printed in an ECMA/ANSI terminal
 //! ```
@@ -139,7 +139,7 @@
 //! - RI : [escape::RI]
 //! - RIS : [escape::RIS]
 //! - RM : [control::mode::Mode::reset]
-//! - SACS : [control::rendition::character_separation]
+//! - SACS : [control::rendition::add_separation]
 //! - SAPV : [control::rendition::select_alternative] (see [control::rendition::PresentationVariant])
 //! - SCI : [escape::SCI]
 //! - SCO : [control::rendition::character_orientation] (see [control::rendition::Orientation])
@@ -161,24 +161,24 @@
 //! - SOH : [characters::transmission::SOH]
 //! - SOS : [escape::SOS]
 //! - SPA : [escape::SPA]
-//! - SPD : todo
+//! - SPD : [control::view::select_directions] (see [control::view::LineOrientation], [control::rendition::CharacterPath] and [control::rendition::PathEffect])
 //! - SPH : [control::view::page_home]
-//! - SPI : todo
+//! - SPI : [control::rendition::spacing_increment]
 //! - SPL : [control::view::page_limit]
-//! - SPQR : todo
-//! - SR : todo
-//! - SRCS : todo
-//! - SRS : todo
+//! - SPQR : [control::device::print_quality]
+//! - SR : [control::view::ScrollDirection::Right] (see [control::view::scroll])
+//! - SRCS : [control::rendition::reduce_separation]
+//! - SRS : [control::rendition::reversed] (see [control::rendition::StringReversion])
 //! - SSA : [escape::SSA]
-//! - SSU : todo
-//! - SSW : todo
+//! - SSU : [control::rendition::select_size_unit] (see [control::rendition::SizeUnit])
+//! - SSW : [control::view::space_width]
 //! - SS2 : [escape::SS2]
 //! - SS3 : [escape::SS3]
 //! - ST : [escape::ST]
 //! - STAB : todo
 //! - STS : [escape::STS]
 //! - STX : [characters::transmission::STX]
-//! - SU : todo
+//! - SU : [control::view::ScrollDirection::Up] (see [control::view::scroll])
 //! - SUB : [characters::SUB]
 //! - SVS : todo
 //! - SYN : [characters::transmission::SYN]

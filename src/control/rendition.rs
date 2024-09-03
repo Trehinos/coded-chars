@@ -412,7 +412,7 @@ pub fn repeat(n: usize) -> ControlSequence {
 ///
 /// The unit in which the parameter value is expressed is that established by the parameter value of SELECT
 /// SIZE UNIT (SSU).
-pub fn character_separation(n: usize) -> ControlSequence {
+pub fn add_separation(n: usize) -> ControlSequence {
     ControlSequence::new(&[&n.to_string()], " \\")
 }
 
@@ -652,7 +652,7 @@ impl Display for StringDirection {
 }
 
 /// # SDS - Start directed string
-/// 
+///
 /// SDS is used to establish in the data component the beginning and the end of a string of characters as
 /// well as the direction of the string. This direction may be different from that currently established. The
 /// indicated string follows the preceding text. The established character progression is not affected.
@@ -670,11 +670,11 @@ impl Display for StringDirection {
 /// re-establishes the next higher level of nesting (the one in effect prior to the string just ended). The
 /// direction is re-established to that in effect prior to the string just ended. The active data position is
 /// moved to the character position following the characters of the string just ended.
-/// 
+///
 /// ### Note 1
 /// The effect of receiving a CVT, HT, SCP, SPD or VT control function within an SDS string is not defined
 /// by this Standard.
-/// 
+///
 /// ### Note 2
 /// The control functions for area definition (DAQ, EPA, ESA, SPA, SSA) should not be used within an SDS
 /// string.
@@ -849,10 +849,121 @@ impl Display for CharacterSpacing {
 }
 
 /// # SHS - Select character spacing
-/// 
+///
 /// SHS is used to establish the character spacing for subsequent text. The established spacing remains in
 /// effect until the next occurrence of SHS or of SET CHARACTER SPACING (SCS) or of SPACING
 /// INCREMENT (SPI) in the data stream. 
 pub fn select_spacing(character_spacing: CharacterSpacing) -> ControlSequence {
     ControlSequence::new(&[&character_spacing.to_string()], " K")
+}
+
+/// # SPI - Spacing increment
+///
+/// SPI is used to establish the line spacing and the character spacing for subsequent text. The established
+/// line spacing remains in effect until the next occurrence of SPI or of SET LINE SPACING (SLS) or of
+/// SELECT LINE SPACING (SVS) in the data stream. The established character spacing remains in effect
+/// until the next occurrence of SET CHARACTER SPACING (SCS) or of SELECT CHARACTER
+/// SPACING (SHS) in the data stream.
+///
+/// The unit in which the parameter values are expressed is that established by the parameter value of
+/// SELECT SIZE UNIT (SSU).
+pub fn spacing_increment(line_spacing: usize, character_spacing: usize) -> ControlSequence {
+    ControlSequence::new(&[&line_spacing.to_string(), &character_spacing.to_string()], " G")
+}
+
+
+/// # SRCS - Set reduced character separation
+///
+/// SRCS is used to establish reduced inter-character escapement for subsequent text. The established
+/// reduced escapement remains in effect until the next occurrence of SRCS or of SET ADDITIONAL
+/// CHARACTER SEPARATION (SACS) in the data stream or until it is reset to the default value by a
+/// subsequent occurrence of CARRIAGE RETURN/LINE FEED (CR/LF) or of NEXT LINE (NEL) in the
+/// data stream.
+///
+/// `n` specifies the number of units by which the inter-character escapement is reduced.
+///
+/// The unit in which the parameter value is expressed is that established by the parameter value of SELECT
+/// SIZE UNIT (SSU).
+pub fn reduce_separation(n: usize) -> ControlSequence {
+    ControlSequence::new(&[&n.to_string()], " f")
+}
+
+pub enum StringReversion {
+    End,
+    BeginReverse,
+}
+
+impl Display for StringReversion {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            Self::End => "0",
+            Self::BeginReverse => "1",
+        })
+    }
+}
+
+/// # SRS - Start reversed string
+///
+/// SRS is used to establish in the data component the beginning and the end of a string of characters as well
+/// as the direction of the string. This direction is opposite to that currently established. The indicated string
+/// follows the preceding text. The established character progression is not affected.
+///
+/// The beginning of a reversed string is indicated by SRS with a parameter value of 1. A reversed string
+/// may contain one or more nested strings. These nested strings may be reversed strings the beginnings of
+/// which are indicated by SRS with a parameter value of 1, or directed strings the beginnings of which are
+/// indicated by START DIRECTED STRING (SDS) with a parameter value not equal to 0. Every
+/// beginning of such a string invokes the next deeper level of nesting.
+///
+/// This Standard does not define the location of the active data position within any such nested string.
+///
+/// The end of a reversed string is indicated by SRS with a parameter value of 0. Every end of such a string
+/// re-establishes the next higher level of nesting (the one in effect prior to the string just ended). The
+/// direction is re-established to that in effect prior to the string just ended. The active data position is
+/// moved to the character position following the characters of the string just ended.
+///
+/// ### Note 1
+/// The effect of receiving a CVT, HT, SCP, SPD or VT control function within an SRS string is not defined
+/// by this Standard.
+///
+/// ### Note 2
+/// The control functions for area definition (DAQ, EPA, ESA, SPA, SSA) should not be used within an SRS
+/// string.
+pub fn reversed(string_reversion: StringReversion) -> ControlSequence {
+    ControlSequence::new(&[&string_reversion.to_string()], "[")
+}
+
+pub enum SizeUnit {
+    Character,
+    Millimeter,
+    ComputerDeciPoint,
+    DeciDidot,
+    Mil,
+    BasicMeasuringUnit,
+    Micrometer,
+    Pixel,
+    DeciPoint,
+}
+
+impl Display for SizeUnit {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", match self {
+            SizeUnit::Character => "0",
+            SizeUnit::Millimeter => "1",
+            SizeUnit::ComputerDeciPoint => "2",
+            SizeUnit::DeciDidot => "3",
+            SizeUnit::Mil => "4",
+            SizeUnit::BasicMeasuringUnit => "5",
+            SizeUnit::Micrometer => "6",
+            SizeUnit::Pixel => "7",
+            SizeUnit::DeciPoint => "8",
+        })
+    }
+}
+
+/// # SSU - Select size unit
+///
+/// SSU is used to establish the unit in which the numeric parameters of certain control functions are
+/// expressed. The established unit remains in effect until the next occurrence of SSU in the data stream.
+pub fn select_size_unit(size_unit: SizeUnit) -> ControlSequence {
+    ControlSequence::new(&[&size_unit.to_string()], " I")
 }

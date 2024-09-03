@@ -1,5 +1,6 @@
 use std::fmt::{Display, Formatter};
 use crate::control::ControlSequence;
+use crate::control::rendition::{CharacterPath, PathEffect};
 
 pub enum JustifyMode {
     /// No justification, end of justification of preceding text.
@@ -69,13 +70,33 @@ pub enum ScrollDirection {
     ///
     /// The active presentation position is not affected by this control function.
     Left,
+
+    /// # SR - Scroll right
+    ///
+    /// SR causes the data in the presentation component to be moved by n character positions if the line
+    /// orientation is horizontal, or by `n` line positions if the line orientation is vertical, such that the data appear
+    /// to move to the right.
+    ///
+    /// The active presentation position is not affected by this control function.
+    Right,
+
+    /// # SU - Scroll up
+    /// 
+    /// SU causes the data in the presentation component to be moved by n line positions if the line orientation
+    /// is horizontal, or by `n` character positions if the line orientation is vertical, such that the data appear to
+    /// move up.
+    /// 
+    /// The active presentation position is not affected by this control function.
+    Up,
 }
 
 impl Display for ScrollDirection {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", match self {
             ScrollDirection::Down => "T",
-            ScrollDirection::Left => "@",
+            ScrollDirection::Left => " @",
+            ScrollDirection::Right => " A",
+            ScrollDirection::Up => "S",
         })
     }
 }
@@ -171,6 +192,62 @@ pub fn line_spacing(n: usize) -> ControlSequence {
     ControlSequence::new(&[&n.to_string()], " h")
 }
 
+pub enum LineOrientation {
+    Horizontal,
+    Vertical,
+}
+
+fn spd_ps1(line_orientation: LineOrientation, line_progression: CharacterPath, character_path: CharacterPath) -> usize {
+    match line_orientation {
+        LineOrientation::Horizontal => {
+            match line_progression {
+                CharacterPath::LeftToRight => {
+                    match character_path {
+                        CharacterPath::LeftToRight => 0,
+                        CharacterPath::RightToLeft => 3,
+                    }
+                }
+                CharacterPath::RightToLeft => {
+                    match character_path {
+                        CharacterPath::LeftToRight => 6,
+                        CharacterPath::RightToLeft => 5,
+                    }
+                }
+            }
+        }
+        LineOrientation::Vertical => {
+            match line_progression {
+                CharacterPath::LeftToRight => {
+                    match character_path {
+                        CharacterPath::LeftToRight => 2,
+                        CharacterPath::RightToLeft => 4,
+                    }
+                }
+                CharacterPath::RightToLeft => {
+                    match character_path {
+                        CharacterPath::LeftToRight => 1,
+                        CharacterPath::RightToLeft => 7,
+                    }
+                }
+            }
+        }
+    }
+}
+
+/// # SPD - Select presentation directions
+///
+/// SPD is used to select the line orientation, the line progression, and the character path in the presentation
+/// component. It is also used to update the content of the presentation component and the content of the
+/// data component. This takes effect immediately.
+pub fn select_directions(
+    line_orientation: LineOrientation,
+    line_progression: CharacterPath,
+    character_path: CharacterPath,
+    path_effect: PathEffect,
+) -> ControlSequence {
+    ControlSequence::new(&[&spd_ps1(line_orientation, line_progression, character_path).to_string(), &path_effect.to_string()], " S")
+}
+
 /// # SPH - Set page home
 ///
 /// If the DEVICE COMPONENT SELECT MODE is set to PRESENTATION, SPH is used to establish at
@@ -188,8 +265,8 @@ pub fn line_spacing(n: usize) -> ControlSequence {
 ///
 /// The established position is called the page home position and remains in effect until the next occurrence
 /// of SPH in the data stream.
-pub fn page_home(c: usize) -> ControlSequence {
-    ControlSequence::new(&[&c.to_string()], " i")
+pub fn page_home(n: usize) -> ControlSequence {
+    ControlSequence::new(&[&n.to_string()], " i")
 }
 
 /// # SPL - Set page limit
@@ -207,6 +284,26 @@ pub fn page_home(c: usize) -> ControlSequence {
 ///
 /// The established position is called the page limit position and remains in effect until the next occurrence
 /// of SPL in the data stream.
-pub fn page_limit(c: usize) -> ControlSequence {
-    ControlSequence::new(&[&c.to_string()], " j")
+pub fn page_limit(n: usize) -> ControlSequence {
+    ControlSequence::new(&[&n.to_string()], " j")
+}
+
+/// # SSW - Set space width
+/// 
+/// SSW is used to establish for subsequent text the character escapement associated with the character
+/// SPACE. The established escapement remains in effect until the next occurrence of SSW in the data
+/// stream or until it is reset to the default value by a subsequent occurrence of CARRIAGE RETURN/LINE
+/// FEED (CR/LF), CARRIAGE RETURN/FORM FEED (CR/FF), or of NEXT LINE (NEL) in the data stream.
+///
+/// `n` specifies the escapement.
+///
+/// The unit in which the parameter value is expressed is that established by the parameter value of SELECT
+/// SIZE UNIT (SSU).
+///
+/// The default character escapement of SPACE is specified by the most recent occurrence of SET
+/// CHARACTER SPACING (SCS) or of SELECT CHARACTER SPACING (SHS) or of SELECT
+/// SPACING INCREMENT (SPI) in the data stream if the current font has constant spacing, or is specified
+/// by the nominal width of the character SPACE in the current font if that font has proportional spacing.
+pub fn space_width(n: usize) -> ControlSequence {
+    ControlSequence::new(&[&n.to_string()], " [")
 }
