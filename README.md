@@ -18,9 +18,9 @@ This crate does not use a concept of "styles" or any kind of abstraction other t
 ### An example
 
 ```rust
-use coded_chars::control::clear_screen;
-use coded_chars::control::cursor::set_position;
-use coded_chars::control::rendition::{format_str, select_graphic};
+use crate::control::clear_screen;
+use crate::control::cursor::set_position;
+use crate::control::presentation::{format_str, select_graphic};
 
 // Direct format
 println!("Hello {}World{} !", select_graphic().fg_red().bold().underline(), select_graphic().default());
@@ -30,8 +30,8 @@ clear_screen();
 
 // Using format_str
 let formatted = format_str(
-    "World",
-    select_graphic().fg_red().bold().underline()
+"World",
+select_graphic().fg_red().bold().underline()
 );
 println!("Hello {} !", formatted);
 

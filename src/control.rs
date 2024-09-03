@@ -56,13 +56,13 @@ impl Display for ControlSequence {
     }
 }
 
-pub mod rendition;
 pub mod mode;
 pub mod cursor;
-pub mod area;
 pub mod device;
-pub mod tabulation;
-pub mod view;
+pub mod display;
+pub mod editor;
+pub mod presentation;
+pub mod format;
 
 /// The page is erased and the cursor position is set to the first line and the first column.
 ///
@@ -71,8 +71,8 @@ pub mod view;
 ///
 /// This function is a shorthand for :
 /// ```
-/// use coded_chars::control::area::{erase_in_page, AreaPosition};
 /// use coded_chars::control::cursor::set_position;
+/// use coded_chars::control::editor::{erase_in_page, AreaPosition};
 /// print!(
 ///     "{}{}",
 ///     erase_in_page(AreaPosition::Whole),
@@ -80,5 +80,5 @@ pub mod view;
 /// );
 /// ```
 pub fn clear_screen() {
-    print!("{}{}", area::erase_in_page(area::AreaPosition::Whole), cursor::set_position(1, 1));
+    print!("{}{}", editor::erase_in_page(editor::AreaPosition::Whole), cursor::set_position(1, 1));
 }

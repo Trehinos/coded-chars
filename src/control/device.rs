@@ -12,6 +12,7 @@ pub fn attributes(n: usize) -> ControlSequence {
     ControlSequence::new(&[&n.to_string()], "c")
 }
 
+#[derive(Copy, Clone, Debug)]
 pub enum StatusReport {
     /// Ready, no malfunction detected.
     Ready,
@@ -63,7 +64,20 @@ pub fn report_status(status_report: StatusReport) -> ControlSequence {
 pub fn function_key(n: usize) -> ControlSequence {
     ControlSequence::new(&[&n.to_string()], " W")
 }
+/// # IDCS - Identify device control string
+///
+/// IDCS is used to specify the purpose and format of the command string of subsequent DEVICE
+/// CONTROL STRINGs (DCS). The specified purpose and format remain in effect until the next
+/// occurrence of IDCS in the data stream.
+///
+/// The format and interpretation of the command string corresponding to these parameter values are to be
+/// defined in appropriate standards. If this control function is used to identify a private command string, a
+/// private parameter value shall be used.
+pub fn identify_control_string(control_string: ControlString) -> ControlSequence {
+    ControlSequence::new(&[&control_string.to_string()], " O")
+}
 
+#[derive(Copy, Clone, Debug)]
 pub enum ControlString {
     SRTMDiagnose,
     Ecma35DCRS,
@@ -78,19 +92,6 @@ impl Display for ControlString {
     }
 }
 
-/// # IDCS - Identify device control string
-///
-/// IDCS is used to specify the purpose and format of the command string of subsequent DEVICE
-/// CONTROL STRINGs (DCS). The specified purpose and format remain in effect until the next
-/// occurrence of IDCS in the data stream.
-///
-/// The format and interpretation of the command string corresponding to these parameter values are to be
-/// defined in appropriate standards. If this control function is used to identify a private command string, a
-/// private parameter value shall be used.
-pub fn identify_control_string(control_string: ControlString) -> ControlSequence {
-    ControlSequence::new(&[&control_string.to_string()], " O")
-}
-
 /// # IGS - Identify graphic sub-repertoire
 ///
 /// IGS is used to indicate that a repertoire of the graphic characters of ISO/IEC 10367 is used in the
@@ -101,6 +102,7 @@ pub fn identify_graphic_sub(n: usize) -> ControlSequence {
     ControlSequence::new(&[&n.to_string()], " W")
 }
 
+#[derive(Copy, Clone, Debug)]
 pub enum CopyStatus {
     /// Initiate transfer to a primary auxiliary device.
     InitTo1,
@@ -151,32 +153,4 @@ pub fn media_copy(copy_status: CopyStatus) -> ControlSequence {
 /// another sheet to be loaded into the printing device from a specified paper bin.
 pub fn eject_and_feed(bin: usize, stacker: usize) -> ControlSequence {
     ControlSequence::new(&[&bin.to_string(), &stacker.to_string()], " Y")
-}
-
-pub enum PrintQuality {
-    /// Highest available print quality, low print speed.
-    Highest,
-    /// Medium print quality, medium print speed.
-    Medium,
-    /// Draft print quality, highest available print speed.
-    Draft,
-}
-
-impl Display for PrintQuality {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", match self {
-            PrintQuality::Highest => "0",
-            PrintQuality::Medium => "1",
-            PrintQuality::Draft => "2",
-        })
-    }
-}
-
-/// # SPQR - Select print quality and rapidity
-/// 
-/// SPQR is used to select the relative print quality and the print speed for devices the output quality and
-/// speed of which are inversely related. The selected values remain in effect until the next occurrence of
-/// SPQR in the data stream. 
-pub fn print_quality(print_quality: PrintQuality) -> ControlSequence {
-    ControlSequence::new(&[&print_quality.to_string()], " X")
 }

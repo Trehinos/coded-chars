@@ -81,11 +81,11 @@ impl Mode {
     /// ### Note
     /// Control functions affected are: EA, ECH, ED, EF, EL.
     ///
-    /// - [crate::control::area::erase]
-    /// - [crate::control::rendition::erase_char]
-    /// - [crate::control::area::erase_in_page]
-    /// - [crate::control::area::erase_in_field]
-    /// - [crate::control::area::erase_in_line]
+    /// - [crate::control::editor::erase]
+    /// - [crate::control::editor::erase_char]
+    /// - [crate::control::editor::erase_in_page]
+    /// - [crate::control::editor::erase_in_field]
+    /// - [crate::control::editor::erase_in_line]
     pub fn erasure(&mut self) -> &mut Self { self.add("6") }
 
     /// # VEM - Line editing mode
@@ -115,8 +115,8 @@ impl Mode {
     /// ### Note
     /// Control functions affected are: DL, IL.
     ///
-    /// - [crate::control::rendition::delete_line]
-    /// - [crate::control::rendition::insert_line]
+    /// - [crate::control::editor::delete_line]
+    /// - [crate::control::editor::insert_line]
     pub fn line_editing(&mut self) -> &mut Self { self.add("7") }
 
     /// # BDSM - Bidirectional support mode
@@ -142,22 +142,22 @@ impl Mode {
     ///
     /// - [crate::control::cursor::position_report]
     /// - [crate::characters::format::CR],
-    /// - [crate::control::rendition::delete_char],
-    /// - [crate::control::rendition::delete_line],
-    /// - [crate::control::area::erase],
-    /// - [crate::control::rendition::erase_char]
-    /// - [crate::control::area::erase_in_page]
-    /// - [crate::control::area::erase_in_field]
-    /// - [crate::control::area::erase_in_line]
-    /// - [crate::control::rendition::insert_char]
-    /// - [crate::control::rendition::insert_line]
+    /// - [crate::control::editor::delete_char],
+    /// - [crate::control::editor::delete_line],
+    /// - [crate::control::editor::erase],
+    /// - [crate::control::editor::erase_char]
+    /// - [crate::control::editor::erase_in_page]
+    /// - [crate::control::editor::erase_in_field]
+    /// - [crate::control::editor::erase_in_line]
+    /// - [crate::control::editor::insert_char]
+    /// - [crate::control::editor::insert_line]
     /// - [crate::characters::format::LF],
     /// - [crate::escape::NEL],
     /// - [crate::escape::RI],
-    /// - [crate::control::view::line_home],
-    /// - [crate::control::view::line_limit],
-    /// - [crate::control::view::page_home],
-    /// - [crate::control::view::page_limit].
+    /// - [crate::control::presentation::line_home],
+    /// - [crate::control::presentation::line_limit],
+    /// - [crate::control::presentation::page_home],
+    /// - [crate::control::presentation::page_limit].
     ///
     pub fn device_component_select(&mut self) -> &mut Self { self.add("9") }
 
@@ -189,8 +189,8 @@ impl Mode {
     /// ### Note
     /// Control functions affected are: DCH, ICH.
     ///
-    /// - [crate::control::rendition::delete_char],
-    /// - [crate::control::rendition::insert_char].
+    /// - [crate::control::editor::delete_char],
+    /// - [crate::control::editor::insert_char].
     pub fn character_editing(&mut self) -> &mut Self { self.add("10") }
 
     /// # SRM - Send/receive mode
@@ -269,11 +269,11 @@ impl Mode {
     /// ### Note
     /// Control functions affected are: CTC, DL, HTS, IL, TBC.
     ///
-    /// - [crate::control::tabulation::cursor_control],
-    /// - [crate::control::rendition::delete_line],
+    /// - [crate::control::cursor::tabulation_control],
+    /// - [crate::control::editor::delete_line],
     /// - [crate::escape::HTS],
-    /// - [crate::control::rendition::insert_line].
-    /// - [crate::control::tabulation::clear].
+    /// - [crate::control::editor::insert_line].
+    /// - [crate::control::format::clear_tabulation].
     pub fn tabulation_stop(&mut self) -> &mut Self { self.add("18") }
     
     /// # GRCM - Graphic rendition combination mode
@@ -286,7 +286,7 @@ impl Mode {
     /// aspects remain unchanged.
     /// 
     /// ### Note
-    /// Control function affected is SGR : [crate::control::rendition::select_graphic].
+    /// Control function affected is SGR : [crate::control::presentation::select_graphic].
     pub fn graphic_rendition_combination(&mut self) -> &mut Self { self.add("21") }
 
     /// # SM - Set Mode

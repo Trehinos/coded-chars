@@ -2,7 +2,14 @@
 
 use std::fmt::{Display, Formatter};
 use crate::control::ControlSequence;
+use crate::control::format::TabulationControl;
 
+/// # CTC - Cursor tabulation control
+///
+/// CTC causes one or more tabulation stops to be set or cleared in the presentation component.
+pub fn tabulation_control(tabulation_control: TabulationControl) -> ControlSequence {
+    ControlSequence::new(&[&tabulation_control.to_string()], "W")
+}
 
 /// # CPR - Active position report
 ///
@@ -32,6 +39,7 @@ pub fn set_position(l: usize, c: usize) -> ControlSequence {
 /// A struct representing the cursor directions.
 ///
 /// To use with the function [move_cursor].
+#[derive(Copy, Clone, Debug)]
 pub enum Direction {
     /// # CUU - Cursor up
     ///
@@ -96,64 +104,31 @@ pub fn move_cursor(direction: Direction, n: usize) -> ControlSequence {
     ControlSequence::new(&[&n.to_string()], &direction.to_string())
 }
 
-
-/// # HPA - Character position absolute
+/// # CBT - Cursor backward tabulation
 ///
-/// HPA causes the active data position to be moved to character position `n` in the active line (the line in the
-/// data component that contains the active data position).
-pub fn character_absolute(n: usize) -> ControlSequence {
-    ControlSequence::new(&[&n.to_string()], "`")
+/// CBT causes the active presentation position to be moved to the character position corresponding to the
+/// `n`-th preceding character tabulation stop in the presentation component, according to the character path.
+pub fn tabulation_backward(n: usize) -> ControlSequence {
+    ControlSequence::new(&[&n.to_string()], "Z")
 }
 
-/// # HPB - Character position backward
+/// # CHT - Cursor forward tabulation
 ///
-/// HPB causes the active data position to be moved by `n` character positions in the data component in the
-/// direction opposite to that of the character progression.
-pub fn character_backward(n: usize) -> ControlSequence {
-    ControlSequence::new(&[&n.to_string()], "j")
+/// CHT causes the active presentation position to be moved to the character position corresponding to the
+/// `n`-th following character tabulation stop in the presentation component, according to the character path.
+pub fn tabulation_forward(n: usize) -> ControlSequence {
+    ControlSequence::new(&[&n.to_string()], "I")
 }
 
-/// # HPR - Character position forward
+/// # CVT - Cursor line tabulation
 ///
-/// HPR causes the active data position to be moved by `n` character positions in the data component in the
-/// direction of the character progression.
-pub fn character_forward(n: usize) -> ControlSequence {
-    ControlSequence::new(&[&n.to_string()], "a")
+/// CVT causes the active presentation position to be moved to the corresponding character position of the
+/// line corresponding to the `n`-th following line tabulation stop in the presentation component.
+pub fn line_tabulation(n: usize) -> ControlSequence {
+    ControlSequence::new(&[&n.to_string()], "Y")
 }
 
-/// # HVP - Character and line position
-///
-/// HVP causes the active data position to be moved in the data component to the `l`-th line position
-/// according to the line progression and to the `c`-th character position according to the character
-/// progression.
-pub fn character_and_line_position(l: usize, c: usize) -> ControlSequence {
-    ControlSequence::new(&[&l.to_string(), &c.to_string()], "f")
-}
-
-/// # PPA - Page position absolute
-///
-/// PPA causes the active data position to be moved in the data component to the corresponding character
-/// position on the `n`-th page.
-pub fn page_position(n: usize) -> ControlSequence {
-    ControlSequence::new(&[&n.to_string()], " P")
-}
-
-/// # PPB - Page position backward
-///
-/// PPB causes the active data position to be moved in the data component to the corresponding character
-/// position on the `n`-th preceding page.
-pub fn page_backward(n: usize) -> ControlSequence {
-    ControlSequence::new(&[&n.to_string()], " R")
-}
-
-/// # PPR - Page position forward
-///
-/// PPR causes the active data position to be moved in the data component to the corresponding character
-/// position on the `n`-th following page.
-pub fn page_forward(n: usize) -> ControlSequence {
-    ControlSequence::new(&[&n.to_string()], " Q")
-}
-
+#[derive(Copy, Clone, Debug)]
 pub enum MovementDirection {
     Same,
     Opposite,
@@ -175,21 +150,3 @@ impl Display for MovementDirection {
 pub fn select_implicit(movement_direction: MovementDirection) -> ControlSequence {
     ControlSequence::new(&[&movement_direction.to_string()], "^")
 }
-
-/// # VPA - Line position absolute
-/// 
-/// VPA causes the active data position to be moved to line position n in the data component in a direction
-/// parallel to the line progression.
-pub fn line_position(n: usize) -> ControlSequence { ControlSequence::new(&[&n.to_string()], "d") }
-
-/// # VPB - Line position backward
-/// 
-/// VPB causes the active data position to be moved by n line positions in the data component in a direction
-/// opposite to that of the line progression.
-pub fn line_backward(n: usize) -> ControlSequence { ControlSequence::new(&[&n.to_string()], "k") }
-
-/// # VPR - Line position forward
-/// 
-/// VPR causes the active data position to be moved by n line positions in the data component in a direction
-/// parallel to the line progression.
-pub fn line_forward(n: usize) -> ControlSequence { ControlSequence::new(&[&n.to_string()], "e") }
