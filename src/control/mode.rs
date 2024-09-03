@@ -140,7 +140,7 @@ impl Mode {
     /// Control functions affected are: CPR, CR, DCH, DL, EA, ECH, ED, EF, EL, ICH, IL, LF, NEL, RI, SLH,
     /// SLL, SPH, SPL.
     ///
-    /// - (todo CPR),
+    /// - [crate::control::cursor::position_report]
     /// - [crate::characters::format::CR],
     /// - [crate::control::rendition::delete_char],
     /// - [crate::control::rendition::delete_line],
@@ -154,10 +154,10 @@ impl Mode {
     /// - [crate::characters::format::LF],
     /// - [crate::escape::NEL],
     /// - [crate::escape::RI],
-    /// - (todo SLH),
-    /// - (todo SLL),
-    /// - (todo SPH),
-    /// - (todo SPL).
+    /// - [crate::control::view::line_home],
+    /// - [crate::control::view::line_limit],
+    /// - [crate::control::view::page_home],
+    /// - [crate::control::view::page_limit].
     ///
     pub fn device_component_select(&mut self) -> &mut Self { self.add("9") }
 
@@ -269,11 +269,11 @@ impl Mode {
     /// ### Note
     /// Control functions affected are: CTC, DL, HTS, IL, TBC.
     ///
-    /// - (todo CTC),
+    /// - [crate::control::tabulation::cursor_control],
     /// - [crate::control::rendition::delete_line],
-    /// - (todo HTS),
+    /// - [crate::escape::HTS],
     /// - [crate::control::rendition::insert_line].
-    /// - (todo TBC).
+    /// - [crate::control::tabulation::clear].
     pub fn tabulation_stop(&mut self) -> &mut Self { self.add("18") }
     
     /// # GRCM - Graphic rendition combination mode
