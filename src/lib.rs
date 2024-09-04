@@ -168,7 +168,6 @@
 //!     - IGS : [device::identify_graphic_sub]
 //!     - INT : [device::INT]
 //!     - MC : [device::media_copy] (see [device::CopyStatus])
-//!     - MW : [escape::MW]
 //!     - RIS : [device::RIS]
 //!     - SEF : [device::eject_and_feed]
 //! - Separators
@@ -203,14 +202,12 @@
 //! - CAN : [characters::CAN]
 //! - CCH : [escape::CCH]
 //! - EM : [characters::EM]
+//! - MW : [escape::MW]
 //! - NUL : [characters::NUL]
 //! - PU1 : [escape::PU1]
 //! - PU2 : [escape::PU2]
 //! - STS : [escape::STS]
 //! - SUB : [characters::SUB]
-
-use crate::cursor::set_position;
-use crate::editor::{erase_in_page, AreaPosition};
 
 pub mod characters;
 pub mod escape;
@@ -232,18 +229,11 @@ pub mod cursor;
 ///
 /// - The ANSI/ECMA printed function is : `ED(2),CUP(1,1)`
 /// - The ANSI/ECMA printed sequence is : `\x1b[2J\x1b[1;1H`
-///
-/// This function is a shorthand for :
-/// ```
-/// use coded_chars::cursor::set_position;
-/// use coded_chars::editor::{erase_in_page, AreaPosition};
-/// print!(
-///     "{}{}",
-///     erase_in_page(AreaPosition::Whole),
-///     set_position(1, 1)
-/// );
-/// ```
+/// 
 pub fn clear_screen() {
+    use crate::cursor::set_position;
+    use crate::editor::{erase_in_page, AreaPosition};
+    
     print!("{}{}", erase_in_page(AreaPosition::Whole), set_position(1, 1));
 }
 
