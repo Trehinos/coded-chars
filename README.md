@@ -24,7 +24,7 @@ use coded_chars::presentation::{format_str, select_graphic};
 
 fn main() {
     // Direct format
-    println!("Hello {}World{} !", select_graphic().fg_red().bold().underline(), select_graphic().default());
+    println!("Hello {}World{}!", select_graphic().fg_red().bold().underline(), select_graphic().default());
 
     // Clear screen
     clear_screen();
@@ -34,12 +34,16 @@ fn main() {
         "World",
         select_graphic().fg_red().bold().underline()
     );
-    println!("Hello {fmt_world} !");
+    println!("Hello {fmt_world}!");
 
     set_position(5, 1).exec();
     println!("This line is printed on the fifth line.");
 }
 ```
+
+Result:  
+![Console](console.png)
+
 
 ### Current status
 

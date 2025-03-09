@@ -246,17 +246,17 @@ mod tests {
         use crate::presentation::{format_str, select_graphic};
 
         // Direct format
-        println!("Hello {}World{} !", select_graphic().fg_red().bold().underline(), select_graphic().default());
+        println!("Hello {}World{}!", select_graphic().fg_red().bold().underline(), select_graphic().default());
 
         // Clear screen
         clear_screen();
 
         // Using format_str
-        let formatted = format_str(
+        let fmt_world = format_str(
             "World",
             select_graphic().fg_red().bold().underline()
         );
-        println!("Hello {} !", formatted);
+        println!("Hello {fmt_world}!");
 
         set_position(5, 1).exec();
         println!("This line is printed on the fifth line.");
