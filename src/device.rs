@@ -202,3 +202,83 @@ pub fn media_copy(copy_status: CopyStatus) -> ControlSequence {
 pub fn eject_and_feed(bin: usize, stacker: usize) -> ControlSequence {
     ControlSequence::new(&[&bin.to_string(), &stacker.to_string()], " Y")
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*; // Import everything from the current module
+    use crate::introducers::CSI;
+
+    #[test]
+    fn test_attributes() {
+        let sequence = attributes(42);
+        assert_eq!(sequence.to_string(), format!("{}42c", CSI));
+    }
+
+    #[test]
+    fn test_report_status() {
+        let sequence = report_status(StatusReport::Ready);
+        assert_eq!(sequence.to_string(), format!("{}0c", CSI));
+
+        let sequence = report_status(StatusReport::ErrorRetry);
+        assert_eq!(sequence.to_string(), format!("{}3c", CSI));
+
+        let sequence = report_status(StatusReport::MessageWaiting);
+        assert_eq!(sequence.to_string(), format!("{}5c", CSI));
+    }
+
+    #[test]
+    fn test_function_key() {
+        let sequence = function_key(7);
+        assert_eq!(sequence.to_string(), format!("{}7 W", CSI));
+    }
+
+    #[test]
+    fn test_identify_control_string() {
+        let sequence = identify_control_string(ControlString::SRTMDiagnose);
+        assert_eq!(sequence.to_string(), format!("{}1 O", CSI));
+
+        let sequence = identify_control_string(ControlString::Ecma35DCRS);
+        assert_eq!(sequence.to_string(), format!("{}2 O", CSI));
+    }
+
+    #[test]
+    fn test_identify_graphic_sub() {
+        let sequence = identify_graphic_sub(4);
+        assert_eq!(sequence.to_string(), format!("{}4 W", CSI));
+    }
+
+    #[test]
+    fn test_media_copy() {
+        let sequence = media_copy(CopyStatus::InitTo1);
+        assert_eq!(sequence.to_string(), format!("{}0i", CSI));
+
+        let sequence = media_copy(CopyStatus::Start2);
+        assert_eq!(sequence.to_string(), format!("{}7i", CSI));
+    }
+
+    #[test]
+    fn test_eject_and_feed() {
+        let sequence = eject_and_feed(2, 3);
+        assert_eq!(sequence.to_string(), format!("{}2;3 Y", CSI));
+    }
+
+    #[test]
+    fn test_status_report_display() {
+        assert_eq!(StatusReport::Ready.to_string(), "0");
+        assert_eq!(StatusReport::BusyRetry.to_string(), "1");
+        assert_eq!(StatusReport::ErrorRetry.to_string(), "3");
+    }
+
+    #[test]
+    fn test_control_string_display() {
+        assert_eq!(ControlString::SRTMDiagnose.to_string(), "1");
+        assert_eq!(ControlString::Ecma35DCRS.to_string(), "2");
+    }
+
+    #[test]
+    fn test_copy_status_display() {
+        assert_eq!(CopyStatus::InitTo1.to_string(), "0");
+        assert_eq!(CopyStatus::Start2.to_string(), "7");
+    }
+}

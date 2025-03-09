@@ -75,3 +75,54 @@ impl Display for ScrollDirection {
         })
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use crate::introducers::CSI;
+    use super::*;
+
+    #[test]
+    fn test_previous_page() {
+        let sequence = previous_page(4);
+        assert_eq!(sequence.to_string(), format!("{}4V", CSI));
+    }
+
+    #[test]
+    fn test_next_page() {
+        let sequence = next_page(3);
+        assert_eq!(sequence.to_string(), format!("{}3U", CSI));
+    }
+
+    #[test]
+    fn test_scroll_down() {
+        let sequence = scroll(5, ScrollDirection::Down);
+        assert_eq!(sequence.to_string(), format!("{}5T", CSI));
+    }
+
+    #[test]
+    fn test_scroll_left() {
+        let sequence = scroll(2, ScrollDirection::Left);
+        assert_eq!(sequence.to_string(), format!("{}2 @", CSI));
+    }
+
+    #[test]
+    fn test_scroll_right() {
+        let sequence = scroll(7, ScrollDirection::Right);
+        assert_eq!(sequence.to_string(), format!("{}7 A", CSI));
+    }
+
+    #[test]
+    fn test_scroll_up() {
+        let sequence = scroll(1, ScrollDirection::Up);
+        assert_eq!(sequence.to_string(), format!("{}1S", CSI));
+    }
+
+    #[test]
+    fn test_scroll_direction_display() {
+        assert_eq!(ScrollDirection::Down.to_string(), "T");
+        assert_eq!(ScrollDirection::Left.to_string(), " @");
+        assert_eq!(ScrollDirection::Right.to_string(), " A");
+        assert_eq!(ScrollDirection::Up.to_string(), "S");
+    }
+}

@@ -316,3 +316,75 @@ impl Mode {
 /// mode().device_component_select().character_editing().set().exec();
 /// ```
 pub fn mode() -> Mode { Mode::new() }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_character_editing() {
+        let generated_sequence = mode().character_editing().set();
+        assert_eq!(format!("{}", generated_sequence), "\x1b[10h");
+    }
+
+    #[test]
+    fn test_send_receive() {
+        let generated_sequence = mode().send_receive().set();
+        assert_eq!(format!("{}", generated_sequence), "\x1b[12h");
+    }
+
+    #[test]
+    fn test_format_effector_action() {
+        let generated_sequence = mode().format_effector_action().set();
+        assert_eq!(format!("{}", generated_sequence), "\x1b[13h");
+    }
+
+    #[test]
+    fn test_format_effector_transfer() {
+        let generated_sequence = mode().format_effector_transfer().set();
+        assert_eq!(format!("{}", generated_sequence), "\x1b[14h");
+    }
+
+    #[test]
+    fn test_multiple_area_transfer() {
+        let generated_sequence = mode().multiple_area_transfer().set();
+        assert_eq!(format!("{}", generated_sequence), "\x1b[15h");
+    }
+
+    #[test]
+    fn test_transfer_termination() {
+        let generated_sequence = mode().transfert_termination().set();
+        assert_eq!(format!("{}", generated_sequence), "\x1b[16h");
+    }
+
+    #[test]
+    fn test_selected_area_transfer() {
+        let generated_sequence = mode().selected_area_transfer().set();
+        assert_eq!(format!("{}", generated_sequence), "\x1b[17h");
+    }
+
+    #[test]
+    fn test_tabulation_stop() {
+        let generated_sequence = mode().tabulation_stop().set();
+        assert_eq!(format!("{}", generated_sequence), "\x1b[18h");
+    }
+
+    #[test]
+    fn test_graphic_rendition_combination() {
+        let generated_sequence = mode().graphic_rendition_combination().set();
+        assert_eq!(format!("{}", generated_sequence), "\x1b[21h");
+    }
+
+    #[test]
+    fn test_reset_mode() {
+        let generated_sequence = mode().character_editing().reset();
+        assert_eq!(format!("{}", generated_sequence), "\x1b[10l");
+    }
+
+    #[test]
+    fn test_combined_modes() {
+        let generated_sequence = mode().character_editing().send_receive().format_effector_transfer().set();
+        assert_eq!(format!("{}", generated_sequence), "\x1b[10;12;14h");
+    }
+}

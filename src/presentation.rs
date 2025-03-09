@@ -1316,3 +1316,67 @@ pub fn tabulation_center_on_char(l: usize, ascii: usize) -> ControlSequence {
 pub fn specify_thin_space(width: usize) -> ControlSequence {
     ControlSequence::new(&[&width.to_string()], " E")
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_space_width() {
+        let cs = space_width(5);
+        assert_eq!(cs.to_string(), "\x1b[5 [");
+    }
+
+    #[test]
+    fn test_select_tabulation() {
+        let cs = select_tabulation(3);
+        assert_eq!(cs.to_string(), "\x1b[3 ^");
+    }
+
+    #[test]
+    fn test_select_line_spacing() {
+        let cs = select_line_spacing(LineSpacing::Per25mm6Lines);
+        assert_eq!(cs.to_string(), "\x1b[0 L");
+        let cs = select_line_spacing(LineSpacing::Per30mm12Lines);
+        assert_eq!(cs.to_string(), "\x1b[8 L");
+    }
+
+    #[test]
+    fn test_line_spacing_display() {
+        let ls = LineSpacing::Per25mm4Lines;
+        assert_eq!(ls.to_string(), "1");
+        let ls = LineSpacing::Per30mm3Lines;
+        assert_eq!(ls.to_string(), "7");
+    }
+
+    #[test]
+    fn test_align_center() {
+        let cs = align_center(10);
+        assert_eq!(cs.to_string(), "\x1b[10 b");
+    }
+
+    #[test]
+    fn test_align_leading() {
+        let cs = align_leading(15);
+        assert_eq!(cs.to_string(), "\x1b[15 a");
+    }
+
+    #[test]
+    fn test_align_trailing() {
+        let cs = align_trailing(20);
+        assert_eq!(cs.to_string(), "\x1b[20 `");
+    }
+
+    #[test]
+    fn test_tabulation_center_on_char() {
+        let cs = tabulation_center_on_char(25, 65);
+        assert_eq!(cs.to_string(), "\x1b[25;65 c");
+    }
+
+    #[test]
+    fn test_specify_thin_space() {
+        let cs = specify_thin_space(2);
+        assert_eq!(cs.to_string(), "\x1b[2 E");
+    }
+}

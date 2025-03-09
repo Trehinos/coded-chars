@@ -91,3 +91,44 @@ pub const SPA: EscapeSequence = escape('V');
 
 /// End of protected area
 pub const EPA: EscapeSequence = escape('W');
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_area_qualification() {
+        let qualification = Qualification::ProtectGuard;
+        let control_seq = area_qualification(qualification);
+
+        assert_eq!(
+            control_seq.to_string(),
+            format!("\x1b[{}o", qualification)
+        );
+    }
+
+    #[test]
+    fn test_qualification_display() {
+        assert_eq!(Qualification::UnprotectNoGuard.to_string(), "0");
+        assert_eq!(Qualification::ProtectGuard.to_string(), "1");
+        assert_eq!(Qualification::Character.to_string(), "2");
+        assert_eq!(Qualification::Numeric.to_string(), "3");
+        assert_eq!(Qualification::Alphabet.to_string(), "4");
+        assert_eq!(Qualification::AlignLast.to_string(), "5");
+        assert_eq!(Qualification::FillZero.to_string(), "6");
+        assert_eq!(Qualification::SetTabStop.to_string(), "7");
+        assert_eq!(Qualification::Protect.to_string(), "8");
+        assert_eq!(Qualification::FillSpace.to_string(), "9");
+        assert_eq!(Qualification::AlignFirst.to_string(), "10");
+        assert_eq!(Qualification::Reverse.to_string(), "11");
+    }
+
+    #[test]
+    fn test_escape_sequences() {
+        assert_eq!(SSA.to_string(), "\x1bF");
+        assert_eq!(ESA.to_string(), "\x1bG");
+        assert_eq!(SPA.to_string(), "\x1bV");
+        assert_eq!(EPA.to_string(), "\x1bW");
+    }
+}

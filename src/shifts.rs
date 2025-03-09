@@ -48,3 +48,64 @@ pub const SS2: EscapeSequence = escape('N');
 
 /// Single shift 3
 pub const SS3: EscapeSequence = escape('O');
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_si_constant() {
+        assert_eq!(SI, '\x0F');
+    }
+
+    #[test]
+    fn test_ls0_constant() {
+        assert_eq!(LS0, SI);
+    }
+
+    #[test]
+    fn test_so_constant() {
+        assert_eq!(SO, '\x0E');
+    }
+
+    #[test]
+    fn test_ls1_constant() {
+        assert_eq!(LS1, SO);
+    }
+
+    #[test]
+    fn test_ls1r_escape_sequence() {
+        assert_eq!(LS1R, escape('~'));
+    }
+
+    #[test]
+    fn test_ls2_escape_sequence() {
+        assert_eq!(LS2, escape('n'));
+    }
+
+    #[test]
+    fn test_ls2r_escape_sequence() {
+        assert_eq!(LS2R, escape('}'));
+    }
+
+    #[test]
+    fn test_ls3_escape_sequence() {
+        assert_eq!(LS3, escape('o'));
+    }
+
+    #[test]
+    fn test_ls3r_escape_sequence() {
+        assert_eq!(LS3R, escape('|'));
+    }
+
+    #[test]
+    fn test_ss2_escape_sequence() {
+        assert_eq!(SS2, escape('N'));
+    }
+
+    #[test]
+    fn test_ss3_escape_sequence() {
+        assert_eq!(SS3, escape('O'));
+    }
+}

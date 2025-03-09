@@ -127,3 +127,85 @@ pub fn tabulation_forward(n: usize) -> ControlSequence {
 pub fn line_tabulation(n: usize) -> ControlSequence {
     ControlSequence::new(&[&n.to_string()], "Y")
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_position_report() {
+        let control = position_report(5, 10);
+        assert_eq!(control.to_string(), "\x1b[5;10R");
+    }
+
+    #[test]
+    fn test_set_position() {
+        let control = set_position(10, 20);
+        assert_eq!(control.to_string(), "\x1b[10;20H");
+    }
+
+    #[test]
+    fn test_move_cursor_up() {
+        let control = move_cursor(Direction::Up, 3);
+        assert_eq!(control.to_string(), "\x1b[3A");
+    }
+
+    #[test]
+    fn test_move_cursor_down() {
+        let control = move_cursor(Direction::Down, 4);
+        assert_eq!(control.to_string(), "\x1b[4B");
+    }
+
+    #[test]
+    fn test_move_cursor_forward() {
+        let control = move_cursor(Direction::Forward, 6);
+        assert_eq!(control.to_string(), "\x1b[6C");
+    }
+
+    #[test]
+    fn test_move_cursor_backward() {
+        let control = move_cursor(Direction::Backward, 2);
+        assert_eq!(control.to_string(), "\x1b[2D");
+    }
+
+    #[test]
+    fn test_move_cursor_nextline() {
+        let control = move_cursor(Direction::NextLine, 5);
+        assert_eq!(control.to_string(), "\x1b[5E");
+    }
+
+    #[test]
+    fn test_move_cursor_previousline() {
+        let control = move_cursor(Direction::PreviousLine, 3);
+        assert_eq!(control.to_string(), "\x1b[3F");
+    }
+
+    #[test]
+    fn test_tabulation_backward() {
+        let control = tabulation_backward(2);
+        assert_eq!(control.to_string(), "\x1b[2Z");
+    }
+
+    #[test]
+    fn test_tabulation_forward() {
+        let control = tabulation_forward(4);
+        assert_eq!(control.to_string(), "\x1b[4I");
+    }
+
+    #[test]
+    fn test_line_tabulation() {
+        let control = line_tabulation(3);
+        assert_eq!(control.to_string(), "\x1b[3Y");
+    }
+
+    #[test]
+    fn test_direction_display() {
+        assert_eq!(Direction::Up.to_string(), "A");
+        assert_eq!(Direction::Down.to_string(), "B");
+        assert_eq!(Direction::Forward.to_string(), "C");
+        assert_eq!(Direction::Backward.to_string(), "D");
+        assert_eq!(Direction::NextLine.to_string(), "E");
+        assert_eq!(Direction::PreviousLine.to_string(), "F");
+    }
+}

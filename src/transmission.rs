@@ -50,3 +50,59 @@ pub const SYN: char = '\x16';
 ///
 /// ETB is used to indicate the end of a block of data where the data are divided into such blocks for transmission purposes.
 pub const ETB: char = '\x17';
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_soh() {
+        assert_eq!(SOH, '\x01');
+    }
+
+    #[test]
+    fn test_stx() {
+        assert_eq!(STX, '\x02');
+    }
+
+    #[test]
+    fn test_etx() {
+        assert_eq!(ETX, '\x03');
+    }
+
+    #[test]
+    fn test_eot() {
+        assert_eq!(EOT, '\x04');
+    }
+
+    #[test]
+    fn test_enq() {
+        assert_eq!(ENQ, '\x05');
+    }
+
+    #[test]
+    fn test_ack() {
+        assert_eq!(ACK, '\x06');
+    }
+
+    #[test]
+    fn test_dle() {
+        assert_eq!(DLE, '\x10');
+    }
+
+    #[test]
+    fn test_nak() {
+        assert_eq!(NAK, '\x15');
+    }
+
+    #[test]
+    fn test_syn() {
+        assert_eq!(SYN, '\x16');
+    }
+
+    #[test]
+    fn test_etb() {
+        assert_eq!(ETB, '\x17');
+    }
+}

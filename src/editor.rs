@@ -283,3 +283,62 @@ impl Display for EditingExtent {
         })
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_erase_area_position() {
+        assert_eq!(erase(AreaPosition::AfterCursor).to_string(), ControlSequence::new(&["0"], "O").to_string());
+        assert_eq!(erase(AreaPosition::BeforeCursor).to_string(), ControlSequence::new(&["1"], "O").to_string());
+        assert_eq!(erase(AreaPosition::Whole).to_string(), ControlSequence::new(&["2"], "O").to_string());
+    }
+
+    #[test]
+    fn test_erase_in_page() {
+        assert_eq!(erase_in_page(AreaPosition::AfterCursor).to_string(), ControlSequence::new(&["0"], "J").to_string());
+        assert_eq!(erase_in_page(AreaPosition::BeforeCursor).to_string(), ControlSequence::new(&["1"], "J").to_string());
+        assert_eq!(erase_in_page(AreaPosition::Whole).to_string(), ControlSequence::new(&["2"], "J").to_string());
+    }
+
+    #[test]
+    fn test_erase_in_field() {
+        assert_eq!(erase_in_field(AreaPosition::AfterCursor).to_string(), ControlSequence::new(&["0"], "N").to_string());
+        assert_eq!(erase_in_field(AreaPosition::BeforeCursor).to_string(), ControlSequence::new(&["1"], "N").to_string());
+        assert_eq!(erase_in_field(AreaPosition::Whole).to_string(), ControlSequence::new(&["2"], "N").to_string());
+    }
+
+    #[test]
+    fn test_erase_in_line() {
+        assert_eq!(erase_in_line(AreaPosition::AfterCursor).to_string(), ControlSequence::new(&["0"], "K").to_string());
+        assert_eq!(erase_in_line(AreaPosition::BeforeCursor).to_string(), ControlSequence::new(&["1"], "K").to_string());
+        assert_eq!(erase_in_line(AreaPosition::Whole).to_string(), ControlSequence::new(&["2"], "K").to_string());
+    }
+
+    #[test]
+    fn test_select_extent() {
+        assert_eq!(select_extent(EditingExtent::Page).to_string(), ControlSequence::new(&["0"], "Q").to_string());
+        assert_eq!(select_extent(EditingExtent::Line).to_string(), ControlSequence::new(&["1"], "Q").to_string());
+        assert_eq!(select_extent(EditingExtent::Field).to_string(), ControlSequence::new(&["2"], "Q").to_string());
+        assert_eq!(select_extent(EditingExtent::QualifiedArea).to_string(), ControlSequence::new(&["3"], "Q").to_string());
+        assert_eq!(select_extent(EditingExtent::Relevant).to_string(), ControlSequence::new(&["4"], "Q").to_string());
+    }
+
+    #[test]
+    fn test_area_position_display() {
+        assert_eq!(AreaPosition::AfterCursor.to_string(), "0");
+        assert_eq!(AreaPosition::BeforeCursor.to_string(), "1");
+        assert_eq!(AreaPosition::Whole.to_string(), "2");
+    }
+
+    #[test]
+    fn test_editing_extent_display() {
+        assert_eq!(EditingExtent::Page.to_string(), "0");
+        assert_eq!(EditingExtent::Line.to_string(), "1");
+        assert_eq!(EditingExtent::Field.to_string(), "2");
+        assert_eq!(EditingExtent::QualifiedArea.to_string(), "3");
+        assert_eq!(EditingExtent::Relevant.to_string(), "4");
+    }
+}

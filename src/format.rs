@@ -269,3 +269,101 @@ pub fn line_backward(n: usize) -> ControlSequence { ControlSequence::new(&[&n.to
 /// VPR causes the active data position to be moved by n line positions in the data component in a direction
 /// parallel to the line progression.
 pub fn line_forward(n: usize) -> ControlSequence { ControlSequence::new(&[&n.to_string()], "e") }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_escape_constants() {
+        assert_eq!(NEL.to_string(), "\x1bE");
+        assert_eq!(PLD.to_string(), "\x1bK");
+        assert_eq!(PLU.to_string(), "\x1bL");
+        assert_eq!(RI.to_string(), "\x1bM");
+        assert_eq!(VTS.to_string(), "\x1bJ");
+    }
+
+    #[test]
+    fn test_character_absolute() {
+        let result = character_absolute(5);
+        assert_eq!(result.to_string(), "\u{1B}[5`");
+    }
+
+    #[test]
+    fn test_character_backward() {
+        let result = character_backward(3);
+        assert_eq!(result.to_string(), "\u{1B}[3j");
+    }
+
+    #[test]
+    fn test_character_forward() {
+        let result = character_forward(7);
+        assert_eq!(result.to_string(), "\u{1B}[7a");
+    }
+
+    #[test]
+    fn test_character_and_line_position() {
+        let result = character_and_line_position(2, 4);
+        assert_eq!(result.to_string(), "\u{1B}[2;4f");
+    }
+
+    #[test]
+    fn test_page_position() {
+        let result = page_position(1);
+        assert_eq!(result.to_string(), "\u{1B}[1 P");
+    }
+
+    #[test]
+    fn test_page_backward() {
+        let result = page_backward(2);
+        assert_eq!(result.to_string(), "\u{1B}[2 R");
+    }
+
+    #[test]
+    fn test_page_forward() {
+        let result = page_forward(3);
+        assert_eq!(result.to_string(), "\u{1B}[3 Q");
+    }
+
+    #[test]
+    fn test_clear_tabulation() {
+        let result = clear_tabulation(TabulationControl::LineClearAll);
+        assert_eq!(result.to_string(), "\u{1B}[6g");
+    }
+
+    #[test]
+    fn test_remove_tabulation_stop() {
+        let result = remove_tabulation_stop(8);
+        assert_eq!(result.to_string(), "\u{1B}[8 d");
+    }
+
+    #[test]
+    fn test_line_position() {
+        let result = line_position(5);
+        assert_eq!(result.to_string(), "\u{1B}[5d");
+    }
+
+    #[test]
+    fn test_line_backward() {
+        let result = line_backward(2);
+        assert_eq!(result.to_string(), "\u{1B}[2k");
+    }
+
+    #[test]
+    fn test_line_forward() {
+        let result = line_forward(4);
+        assert_eq!(result.to_string(), "\u{1B}[4e");
+    }
+
+    #[test]
+    fn test_tabulation_control_display_trait() {
+        assert_eq!(TabulationControl::Character.to_string(), "0");
+        assert_eq!(TabulationControl::Line.to_string(), "1");
+        assert_eq!(TabulationControl::CharacterRemove.to_string(), "2");
+        assert_eq!(TabulationControl::LineRemove.to_string(), "3");
+        assert_eq!(TabulationControl::CharacterClearLine.to_string(), "4");
+        assert_eq!(TabulationControl::CharacterClearAll.to_string(), "5");
+        assert_eq!(TabulationControl::LineClearAll.to_string(), "6");
+    }
+}

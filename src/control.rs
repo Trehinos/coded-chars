@@ -55,3 +55,24 @@ impl Display for ControlSequence {
         write!(f, "{}{}{}", CSI, self.arguments.join(";"), self.end)
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::introducers::CSI;
+
+    #[test]
+    fn test_control_sequence_new() {
+        let sequence = ControlSequence::new(&["1", "1"], "H");
+        assert_eq!(sequence.arguments, vec!["1".to_string(), "1".to_string()]);
+        assert_eq!(sequence.end, "H".to_string());
+    }
+
+    #[test]
+    fn test_control_sequence_display() {
+        let sequence = ControlSequence::new(&["1", "1"], "H");
+        let expected_output = format!("{}1;1H", CSI);
+        assert_eq!(sequence.to_string(), expected_output);
+    }
+}

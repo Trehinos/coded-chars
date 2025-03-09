@@ -52,3 +52,28 @@ pub const SPC:char = '\x20';
 
 /// Delete
 pub const DEL:char = '\x7f';
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_separator_constants() {
+        assert_eq!(separator::US, '\x1F'); // Unit separator
+        assert_eq!(separator::RS, '\x1E'); // Record separator
+        assert_eq!(separator::GS, '\x1D'); // Group separator
+        assert_eq!(separator::FS, '\x1C'); // File separator
+    }
+
+    #[test]
+    fn test_control_characters() {
+        assert_eq!(NUL, '\x00'); // Null
+        assert_eq!(BEL, '\x07'); // Bell
+        assert_eq!(CAN, '\x18'); // Cancel
+        assert_eq!(EM, '\x19');  // End of medium
+        assert_eq!(SUB, '\x1A'); // Substitute
+        assert_eq!(SPC, '\x20'); // Space
+        assert_eq!(DEL, '\x7F'); // Delete
+    }
+}
