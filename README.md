@@ -18,25 +18,27 @@ This crate does not use a concept of "styles" or any kind of abstraction other t
 ### An example
 
 ```rust
-use crate::clear_screen;
-use crate::cursor::set_position;
-use crate::presentation::{format_str, select_graphic};
+use coded_chars::clear_screen;
+use coded_chars::cursor::set_position;
+use coded_chars::presentation::{format_str, select_graphic};
 
-// Direct format
-println!("Hello {}World{} !", select_graphic().fg_red().bold().underline(), select_graphic().default());
+fn main() {
+    // Direct format
+    println!("Hello {}World{} !", select_graphic().fg_red().bold().underline(), select_graphic().default());
 
-// Clear screen
-clear_screen();
+    // Clear screen
+    clear_screen();
 
-// Using format_str
-let formatted = format_str(
-    "World",
-    select_graphic().fg_red().bold().underline()
-);
-println!("Hello {} !", formatted);
+    // Using format_str
+    let formatted = format_str(
+        "World",
+        select_graphic().fg_red().bold().underline()
+    );
+    println!("Hello {} !", formatted);
 
-set_position(5, 1).exec();
-println!("This line is printed on the fifth line.");
+    set_position(5, 1).exec();
+    println!("This line is printed on the fifth line.");
+}
 ```
 
 ### Current status
